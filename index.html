@@ -1,0 +1,868 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TarjetApp</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            font-family: system-ui, -apple-system, sans-serif;
+            color: ivory;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1.2fr 1.8fr 1.0fr;
+            gap: 2rem;
+            height: 80vh;
+        }
+
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 2rem;
+        }
+
+        .input-area {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .card-list {
+            display: flex;
+            flex-direction: column;
+            height: 75vh;
+        }
+
+        .card-list-items {
+            overflow-y: auto;
+            margin-bottom: 1rem;
+        }
+
+        .card-list-items::-webkit-scrollbar {
+            width: 0px;
+        }
+
+        .card-list-items::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .card-list-items::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 5px;
+        }
+
+        .card-list-items::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        .card-list-item {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 0.5rem;
+            padding: 1rem;
+            margin-bottom: 0.5rem;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .card-list-item:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .card-list-item-title {
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .card-list-item-count {
+            font-size: 0.875rem;
+            opacity: 0.7;
+        }
+
+        .card-list-item-actions {
+            display: flex;
+            align-items: center;
+            margin-left: auto;
+        }
+
+        .card-list-item-edit-btn,
+        .card-list-item-delete-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            margin-left: 0.5rem;
+            opacity: 0.7;
+            transition: opacity 0.2s;
+            padding: 0.2rem;
+        }
+
+        .card-list-item-edit-btn:hover,
+        .card-list-item-delete-btn:hover {
+            opacity: 1;
+        }
+
+        textarea {
+            flex-grow: 1;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 0.5rem;
+            color: white;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            resize: none;
+            min-height: 200px;
+        }
+
+        button {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            padding: 0.5rem 1rem;
+            color: white;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .settings-btn {
+            background: none;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .add-new-btn {
+            width: 100%;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: background 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .add-new-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .return-btn {
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: none;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .create-view {
+            display: none;
+            height: 100%;
+        }
+
+        .create-view.visible {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .list-view {
+            display: none;
+            height: 100%;
+        }
+
+        .list-view.visible {
+            display: block;
+        }
+
+        .flashcard-container {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .flashcard {
+            flex-grow: 1;
+            cursor: pointer;
+            position: relative;
+            text-align: center;
+            transition: transform 0.6s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 300px;
+        }
+
+        .card-face {
+            position: absolute;
+            inset: 0;
+            backface-visibility: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.3s;
+        }
+
+        .card-face.back {
+            opacity: 0;
+        }
+
+        .flashcard.flipped .card-face.front {
+            opacity: 0;
+        }
+
+        .flashcard.flipped .card-face.back {
+            opacity: 1;
+        }
+
+        .flashcard-text {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            padding: 0 2rem;
+        }
+
+        .flashcard-hint {
+            font-size: 0.875rem;
+            opacity: 0.7;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 1rem;
+            padding: 1rem 0;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+            padding: 2rem;
+            z-index: 1000;
+        }
+
+        .modal.visible {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 1rem;
+        }
+
+        .loading.visible {
+            display: block;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .loading::after {
+            content: "⏳";
+            display: inline-block;
+            animation: spin 1s linear infinite;
+            margin-left: 0.5rem;
+        }
+
+        input {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 0.5rem;
+            color: white;
+            padding: 0.75rem;
+            margin: 0.5rem 0 1rem;
+        }
+
+        .right-column {
+            opacity: 0.5;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .right-column::-webkit-scrollbar {
+            width: 5px;
+        }
+
+        .right-column::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .right-column::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 5px;
+        }
+
+        .right-column::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        #playlist {
+            flex-grow: 1;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .full-text-view {
+            display: none;
+            height: 100%;
+        }
+
+        .full-text-view.visible {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .full-text-view > div::-webkit-scrollbar {
+            width: 5px;
+        }
+
+        .full-text-view > div::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .full-text-view > div::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 5px;
+        }
+
+        .full-text-view > div::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.5);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1 style="display: inline-block; vertical-align: middle; cursor: pointer; position: relative;" onclick="toggleMenu()"><img src="tarjetapplogo.png" alt="TarjetApp Logo" width="50" height="50" style="vertical-align: middle;"> TarjetApp
+                <div id="menu" style="display: none; position: absolute; top: 100%; left: 0; background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 0.5rem; padding: 0.5rem; z-index: 100; backdrop-filter: blur(10px);">
+                    <button onclick="toggleMergeMode()" style="display: block; width: 100%; text-align: left; padding: 0.5rem; border: none; background: none; color: white; cursor: pointer;">Merge Mode</button>
+                    <button onclick="toggleSettings()" style="display: block; width: 100%; text-align: left; padding: 0.5rem; border: none; background: none; color: white; cursor: pointer;">Model Selection</button>
+                    <button onclick="exportCards()" style="display: block; width: 100%; text-align: left; padding: 0.5rem; border: none; background: none; color: white; cursor: pointer;">Export Cards</button>
+                    <button onclick="importCards()" style="display: block; width: 100%; text-align: left; padding: 0.5rem; border: none; background: none; color: white; cursor: pointer;">Import Cards</button>
+
+                </div>
+            </h1>
+        </header>
+
+        <div class="main-content">
+            <!-- Left Column -->
+            <div class="glass-panel input-area">
+                <!-- List View -->
+                <div id="cardListView" class="list-view visible">
+                    <div class="card-list">
+                        <div class="card-list-items" id="cardListItems">
+                            <!-- Cards will be inserted here -->
+                        </div>
+                        <button class="add-new-btn" onclick="showCreateView()">
+                            <span>+</span> Add New Flashcards
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Full Text View -->
+                <div id="fullTextView" class="full-text-view">
+                    <button class="return-btn" onclick="showListView()">
+                        ← Return to List
+                    </button>
+                    <div style="overflow-y: auto; height: 70vh;">
+                        <div id="fullTextContent" style="white-space: pre-wrap; padding: 1rem;"></div>
+                    </div>
+                </div>
+
+                <!-- Create View -->
+                <div id="createCardView" class="create-view">
+                    <button class="return-btn" onclick="showListView()">
+                        ← Return to List
+                    </button>
+                    <textarea id="textInput" placeholder="Enter your text here"></textarea>
+                    <button onclick="createFlashcards()">Create Flashcards</button>
+                </div>
+            </div>
+
+            <!-- Middle Column -->
+            <div id="flashcardContainer" class="glass-panel flashcard-container">
+                <div class="flashcard" onclick="toggleCard()">
+                    <div class="card-face front">
+                        <div class="flashcard-text" id="frontText">Enter text and click create</div>
+                    </div>
+                    <div class="card-face back">
+                        <div class="flashcard-text" id="backText"></div>
+                    </div>
+                </div>
+                <div class="navigation">
+                    <button onclick="prevCard()">←</button>
+                    <span id="cardCount">0/0</span>
+                    <button onclick="nextCard()">→</button>
+                </div>
+            </div>
+
+            <!-- Right Column - Music Player -->
+            <div class="glass-panel right-column">
+                <div style="display: flex; flex-direction: column; align-items: center;">
+                    <h2 style="margin-bottom: 1rem;">Music Player</h2>
+                    <audio id="audioPlayer" controls style="width: 100%;"></audio>
+                    <input type="file" id="audioFile" accept="audio/*" multiple style="margin-bottom: 1rem;">
+                    <ul id="playlist" style="list-style: none; padding: 0; margin-bottom: 1rem;"></ul>                    
+                </div>
+            </div>
+        </div>
+
+        <div id="loadingIndicator" class="loading glass-panel">
+            Translating your text...
+        </div>
+    </div>
+
+    <div id="settingsModal" class="modal">
+        <div class="modal-content glass-panel">
+            <h2>API Keys</h2>
+            <div style="height: 1rem;"></div>
+            <div>
+                <label for="apiKey">Gemini API Key</label>
+                <input 
+                    type="password" 
+                    id="apiKey" 
+                    placeholder="Enter your Gemini API key"
+                    onchange="saveApiKey(event)"
+                >
+            </div>
+            <div>
+                <label for="xaiApiKey">xAI API Key</label>
+                <input
+                    type="password"
+                    id="xaiApiKey"
+                    placeholder="Enter your xAI API key"
+                    onchange="saveXaiApiKey(event)"
+                />
+            </div>
+            <div>
+                <label for="modelSelect">Model</label>
+                <select id="modelSelect">
+                    <option value="gemini-pro">Gemini</option>
+                    <option value="grok-2-1212">Grok</option>
+                </select>
+            </div>
+            <div style="height: 1rem;"></div>
+            <button onclick="toggleSettings()">Save</button>
+        </div>
+    </div>
+
+    <script>
+        let flashcards = [];
+        let currentIndex = 0;
+        let isFlipped = false;
+        let savedCardSets = [];
+        let mergeMode = false;
+
+        function toggleMergeMode() {
+            mergeMode = !mergeMode;
+            updateCard();
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const apiKeyInput = document.getElementById('apiKey');
+            apiKeyInput.value = localStorage.getItem('apiKey') || '';
+            const xaiApiKeyInput = document.getElementById('xaiApiKey');
+            xaiApiKeyInput.value = localStorage.getItem('xaiApiKey') || '';
+            
+            // Load saved card sets from localStorage if available
+            const savedSets = localStorage.getItem('savedCardSets');
+            if (savedSets) {
+                savedCardSets = JSON.parse(savedSets);
+                updateCardList();
+            }
+        });
+
+        function toggleMenu() {
+            const menu = document.getElementById('menu');
+            menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
+        }
+
+        function exportCards() {
+            const cardSets = JSON.stringify(savedCardSets);
+            const blob = new Blob([cardSets], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'tarjetapp_cards.json';
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        function importCards() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = 'application/json';
+            input.onchange = event => {
+                const file = event.target.files[0];
+                if (!file) return;
+                const reader = new FileReader();
+                reader.onload = e => {
+                    try {
+                        const importedCardSets = JSON.parse(e.target.result);
+                        if (Array.isArray(importedCardSets)) {
+                            savedCardSets = importedCardSets;
+                            localStorage.setItem('savedCardSets', JSON.stringify(savedCardSets));
+                            updateCardList();
+                        } else {
+                            alert('Invalid file format.');
+                        }
+                    } catch (error) {
+                        alert('Error parsing file.');
+                    }
+                };
+                reader.readAsText(file);
+            };
+            input.click();
+        }
+
+        function editCardSetTitle(event, cardSetId) {
+            event.stopPropagation();
+            const newTitle = prompt('Enter new title:');
+            if (newTitle) {
+                const cardSetIndex = savedCardSets.findIndex(set => set.id === cardSetId);
+                if (cardSetIndex > -1) {
+                    savedCardSets[cardSetIndex].title = newTitle;
+                    localStorage.setItem('savedCardSets', JSON.stringify(savedCardSets));
+                    updateCardList();
+                }
+            }
+        }
+
+        function deleteCardSet(event, cardSetId) {
+            event.stopPropagation();
+            const confirmDelete = confirm('Are you sure you want to delete this card set?');
+            if (confirmDelete) {
+                savedCardSets = savedCardSets.filter(set => set.id !== cardSetId);
+                localStorage.setItem('savedCardSets', JSON.stringify(savedCardSets));
+                updateCardList();
+            }
+        }
+
+        function toggleSettings() {
+            document.getElementById('settingsModal').classList.toggle('visible');
+        }
+
+        function saveApiKey(event) {
+            localStorage.setItem('apiKey', event.target.value);
+        }
+
+        function saveXaiApiKey(event) {
+            localStorage.setItem('xaiApiKey', event.target.value);
+        }
+
+        function showCreateView() {
+            document.getElementById('cardListView').classList.remove('visible');
+            document.getElementById('createCardView').classList.add('visible');
+        }
+
+        function showListView() {
+            document.getElementById('createCardView').classList.remove('visible');
+            document.getElementById('cardListView').classList.add('visible');
+            document.getElementById('fullTextView').classList.remove('visible');
+        }
+
+        function addToCardList(cards) {
+            const cardSet = {
+                id: Date.now(),
+                title: cards[0].spanish.substring(0, 50) + '...',
+                cards: cards,
+                timestamp: new Date()
+            };
+            savedCardSets.unshift(cardSet);
+            localStorage.setItem('savedCardSets', JSON.stringify(savedCardSets));
+            updateCardList();
+            showListView();
+        }
+
+        function updateCardList() {
+            const listContainer = document.getElementById('cardListItems');
+            listContainer.innerHTML = '';
+            
+            savedCardSets.forEach(cardSet => {
+                const item = document.createElement('div');
+                item.className = 'card-list-item';
+                item.innerHTML = `
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <div class="card-list-item-title">${cardSet.title}</div>
+                            <div class="card-list-item-count">${cardSet.cards.length} cards</div>
+                        </div>
+                        <div class="card-list-item-actions">
+                            <button class="card-list-item-edit-btn" onclick="editCardSetTitle(event, ${cardSet.id})"><i class="fa-solid fa-pen-to-square"></i></button>
+                            <button class="card-list-item-delete-btn" onclick="deleteCardSet(event, ${cardSet.id})"><i class="fa-solid fa-trash-can"></i></button>
+                        </div>
+                    </div>
+                `;
+                item.onclick = () => loadCardSet(cardSet);
+                listContainer.appendChild(item);
+            });
+        }
+
+        function loadCardSet(cardSet) {
+            document.getElementById('cardListView').classList.remove('visible');
+            document.getElementById('fullTextView').classList.add('visible');
+            document.getElementById('fullTextContent').textContent = cardSet.cards.map(card => card.spanish + '\n' + card.english).join('\n\n');
+            flashcards = cardSet.cards;
+            currentIndex = 0;
+            isFlipped = false;
+            updateCard();
+        }
+
+        async function translateText(text) {
+            const apiKey = localStorage.getItem('apiKey');
+            const xaiApiKey = document.getElementById('xaiApiKey').value;
+            const model = document.getElementById('modelSelect').value;
+
+            if (!apiKey && model === 'gemini-pro') {
+                alert('Please set your Gemini API key in settings first!');
+                return null;
+            }
+
+            if (!xaiApiKey && model === 'grok-2-1212') {
+                alert('Please set your xAI API key in settings first!');
+                return null;
+            }
+
+            const geminiApiUrl = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent';
+            const xaiApiUrl = 'https://api.x.ai/v1/chat/completions';
+
+            try {
+                let response;
+                if (model === 'gemini-pro') {
+                    response = await fetch(geminiApiUrl, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'x-goog-api-key': apiKey,
+                        },
+                        body: JSON.stringify({
+                            contents: [{
+                                parts: [{
+                                    text: `Translate the following Spanish text to English: ${text}`
+                                }]
+                            }]
+                        })
+                    });
+                } else if (model === 'grok-2-1212') {
+                     response = await fetch(xaiApiUrl, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${xaiApiKey}`,
+                        },
+                        body: JSON.stringify({
+                            model: 'grok-2-1212',
+                            messages: [{
+                                role: 'user',
+                                content: `Translate the following Spanish text to English: ${text}`
+                            }]
+                        })
+                    });
+                }
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    console.error('API error:', errorData);
+                    throw new Error(`API error: ${response.status} - ${errorData.error?.message || 'Unknown error'}`);
+                }
+
+                const data = await response.json();
+                let englishTranslation;
+
+                if (model === 'gemini-pro') {
+                    englishTranslation = data.candidates[0].content.parts[0].text;
+                } else if (model === 'grok-2-1212') {
+                    englishTranslation = data.choices[0].message.content;
+                }
+
+                const spanishSentences = text.split(/[]\s+|\n/).filter(sentence => sentence.trim() !== '');
+                const englishSentences = englishTranslation.split(/[]\s+|\n/).filter(sentence => sentence.trim() !== '');
+
+                const flashcards = spanishSentences.map((spanishSentence, index) => ({
+                    spanish: spanishSentence.trim(),
+                    english: englishSentences[index] ? englishSentences[index].trim() : 'No translation found'
+                }));
+
+                return flashcards;
+
+            } catch (error) {
+                console.error('Error during translation:', error);
+                alert('Translation failed. Please check your API key and try again.');
+                return null;
+            }
+        }
+
+        async function createFlashcards() {
+            const text = document.getElementById('textInput').value;
+            if (!text) return;
+
+            const loading = document.getElementById('loadingIndicator');
+            loading.classList.add('visible');
+
+            try {
+                const translated = await translateText(text);
+                if (translated) {
+                    flashcards = translated;
+                    currentIndex = 0;
+                    isFlipped = false;
+                    updateCard();
+                    addToCardList(translated);
+                    document.getElementById('textInput').value = ''; // Clear input
+                }
+            } catch (error) {
+                alert('Translation failed. Please check your API key and try again.');
+            } finally {
+                loading.classList.remove('visible');
+            }
+        }
+
+        function updateCard() {
+            if (flashcards.length === 0) return;
+            
+            const card = flashcards[currentIndex];
+            const frontText = document.getElementById('frontText');
+            const backText = document.getElementById('backText');
+
+            if (mergeMode) {
+                frontText.innerHTML = `<div style="margin-bottom: 2rem;">${card.spanish}</div><div>${card.english}</div>`;
+                backText.style.display = 'none';
+            } else {
+                frontText.textContent = card.spanish;
+                backText.textContent = card.english;
+                backText.style.display = isFlipped ? 'block' : 'none';
+            }
+
+            document.getElementById('cardCount').textContent = 
+                `${currentIndex + 1} / ${flashcards.length}`;
+            
+            const flashcardEl = document.querySelector('.flashcard');
+            if (isFlipped && !mergeMode) {
+                flashcardEl.classList.add('flipped');
+            } else {
+                flashcardEl.classList.remove('flipped');
+            }
+        }
+
+        function toggleCard() {
+            isFlipped = !isFlipped;
+            updateCard();
+        }
+
+        function nextCard() {
+            if (flashcards.length === 0) return;
+            currentIndex = (currentIndex + 1) % flashcards.length;
+            isFlipped = false;
+            updateCard();
+        }
+
+        function prevCard() {
+            if (flashcards.length === 0) return;
+            currentIndex = (currentIndex - 1 + flashcards.length) % flashcards.length;
+            isFlipped = false;
+            updateCard();
+        }
+
+        document.addEventListener('keydown', function(event) {
+            if (event.code === 'Space') {
+                toggleCard();
+            } else if (event.code === 'ArrowLeft') {
+                prevCard();
+            } else if (event.code === 'ArrowRight') {
+                nextCard();
+            } else if (event.code === 'ArrowUp' || event.code === 'ArrowDown') {
+                toggleCard();
+            }
+        });
+
+        const audioPlayer = document.getElementById('audioPlayer');
+        const playlist = document.getElementById('playlist');
+        const audioFile = document.getElementById('audioFile');
+        let songs = [];
+        let currentSongIndex = 0;
+
+        audioFile.addEventListener('change', function() {
+            const files = this.files;
+            if (files) {
+                for (let i = 0; i < files.length; i++) {
+                    const file = files[i];
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        const song = {
+                            name: file.name,
+                            src: e.target.result
+                        };
+                        songs.push(song);
+                        addSongToPlaylist(song);
+                    };
+                    reader.readAsDataURL(file);
+                }
+            }
+        });
+
+        function addSongToPlaylist(song) {
+            const listItem = document.createElement('li');
+            listItem.textContent = song.name;
+            listItem.style.cursor = 'pointer';
+            listItem.style.padding = '0.5rem';
+            listItem.style.marginBottom = '0.25rem';
+            listItem.style.background = 'rgba(255, 255, 255, 0.1)';
+            listItem.style.borderRadius = '0.25rem';
+            listItem.addEventListener('click', function() {
+                playSong(song);
+            });
+            playlist.appendChild(listItem);
+        }
+
+        function playSong(song) {
+            audioPlayer.src = song.src;
+            audioPlayer.play();
+        }
+    </script>
+</body>
+</html>
