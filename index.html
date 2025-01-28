@@ -14,9 +14,9 @@
 
         body {
             min-height: 100vh;
-            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
-            font-family: system-ui, -apple-system, sans-serif;
-            color: ivory;
+            background: linear-gradient(135deg, #5935a0 0%, #8568c1 100%);
+            font-family: 'Echo Easy', sans-serif;
+            color: rgba(255, 255, 255, 0.8); /* White with 70% opacity */
             padding: 2rem;
         }
 
@@ -40,7 +40,7 @@
         }
 
         .glass-panel {
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(70, 50, 100, 0.2);
             backdrop-filter: blur(10px);
             border-radius: 1rem;
             border: 1px solid rgba(255, 255, 255, 0.2);
@@ -50,7 +50,7 @@
         .input-area {
             display: flex;
             flex-direction: column;
-            height: 100%;
+            height: 82vh;
         }
 
         .card-list {
@@ -374,6 +374,10 @@
         .full-text-view > div::-webkit-scrollbar-thumb:hover {
             background: rgba(255, 255, 255, 0.5);
         }
+
+        .dark-mode {
+            background: linear-gradient(135deg, #1a1a2e 0%, #3f325a 100%);
+        }
     </style>
 </head>
 <body>
@@ -385,7 +389,7 @@
                     <button onclick="toggleSettings()" style="display: block; width: 100%; text-align: left; padding: 0.5rem; border: none; background: none; color: white; cursor: pointer;">Model Selection</button>
                     <button onclick="exportCards()" style="display: block; width: 100%; text-align: left; padding: 0.5rem; border: none; background: none; color: white; cursor: pointer;">Export Cards</button>
                     <button onclick="importCards()" style="display: block; width: 100%; text-align: left; padding: 0.5rem; border: none; background: none; color: white; cursor: pointer;">Import Cards</button>
-
+                    <button onclick="toggleDarkMode()" style="display: block; width: 100%; text-align: left; padding: 0.5rem; border: none; background: none; color: white; cursor: pointer;">Dark Mode</button>
                 </div>
             </h1>
         </header>
@@ -420,8 +424,8 @@
                     <button class="return-btn" onclick="showListView()">
                         ← Return to List
                     </button>
-                    <textarea id="textInput" placeholder="Enter your text here"></textarea>
-                    <button onclick="createFlashcards()">Create Flashcards</button>
+                    <textarea id="textInput" placeholder=""></textarea> 
+                    <button style="padding: 1rem;" onclick="createFlashcards()">Create Flashcards</button>
                 </div>
             </div>
 
@@ -563,15 +567,37 @@
 
         function editCardSetTitle(event, cardSetId) {
             event.stopPropagation();
-            const newTitle = prompt('Enter new title:');
-            if (newTitle) {
-                const cardSetIndex = savedCardSets.findIndex(set => set.id === cardSetId);
-                if (cardSetIndex > -1) {
-                    savedCardSets[cardSetIndex].title = newTitle;
-                    localStorage.setItem('savedCardSets', JSON.stringify(savedCardSets));
-                    updateCardList();
+            const titleElement = event.target;
+            titleElement.contentEditable = true;
+            titleElement.focus();
+            // Select all text when the title becomes editable
+            const range = document.createRange();
+            range.selectNodeContents(titleElement);
+            const sel = window.getSelection();
+            sel.removeAllRanges();
+            sel.addRange(range);
+
+            titleElement.addEventListener('keydown', function handleEnter(event) {
+                if (event.key === 'Enter') {
+                    event.preventDefault(); // Prevent new line
+                    titleElement.blur(); // Trigger blur to save
+                    titleElement.removeEventListener('keydown', handleEnter);
                 }
-            }
+            });
+
+            titleElement.addEventListener('blur', function handleBlur() {
+                titleElement.contentEditable = false;
+                const newTitle = titleElement.textContent;
+                if (newTitle) {
+                    const cardSetIndex = savedCardSets.findIndex(set => set.id === cardSetId);
+                    if (cardSetIndex > -1) {
+                        savedCardSets[cardSetIndex].title = newTitle;
+                        localStorage.setItem('savedCardSets', JSON.stringify(savedCardSets));
+                        updateCardList();
+                    }
+                }
+                titleElement.removeEventListener('blur', handleBlur);
+            });
         }
 
         function deleteCardSet(event, cardSetId) {
@@ -630,11 +656,10 @@
                 item.innerHTML = `
                     <div style="display: flex; justify-content: space-between; align-items: center;">
                         <div>
-                            <div class="card-list-item-title">${cardSet.title}</div>
+                            <div class="card-list-item-title" onclick="editCardSetTitle(event, ${cardSet.id})">${cardSet.title}</div>
                             <div class="card-list-item-count">${cardSet.cards.length} cards</div>
                         </div>
-                        <div class="card-list-item-actions">
-                            <button class="card-list-item-edit-btn" onclick="editCardSetTitle(event, ${cardSet.id})"><i class="fa-solid fa-pen-to-square"></i></button>
+                        <div class="card-list-item-actions">                
                             <button class="card-list-item-delete-btn" onclick="deleteCardSet(event, ${cardSet.id})"><i class="fa-solid fa-trash-can"></i></button>
                         </div>
                     </div>
@@ -790,8 +815,12 @@
         }
 
         function toggleCard() {
-            isFlipped = !isFlipped;
-            updateCard();
+            if (mergeMode) {
+                nextCard();
+            } else {
+                isFlipped = !isFlipped;
+                updateCard();
+            }
         }
 
         function nextCard() {
@@ -862,6 +891,10 @@
         function playSong(song) {
             audioPlayer.src = song.src;
             audioPlayer.play();
+        }
+
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
         }
     </script>
 </body>
