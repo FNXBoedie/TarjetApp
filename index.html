@@ -1,11 +1,117 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TarjetApp</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        /* --- Theme Variables --- */
+
+        /* Light Theme */
+        html[data-theme="light"] {
+            --bg-gradient-start: #f8fafc;    /* Very Light Cool Gray */
+            --bg-gradient-end: #f1f5f9;      /* Slightly Darker Cool Gray */
+            --glass-bg: rgba(255, 255, 255, 0.6); /* More opaque White Glass for contrast */
+            --glass-border: rgba(0, 0, 0, 0.1); /* Slightly darker border */
+            --text-primary: #1e293b;         /* Dark Slate Blue */
+            --text-secondary: #64748b;       /* Medium Slate Gray */
+            --accent-color: #10b981;         /* Emerald Green / Mint */
+            --accent-hover: #059669;         /* Darker Emerald Green */
+            --border-radius-lg: 1rem;
+            --border-radius-md: 0.5rem;
+            --blur-intensity: 8px;           /* Less blur needed on light bg */
+            --shadow-color: rgba(51, 65, 85, 0.12);/* Lighter, cooler shadow */
+            --input-bg: rgba(241, 245, 249, 0.7); /* Light input bg */
+            --input-focus-bg: rgba(255, 255, 255, 0.9);
+            --list-item-bg: rgba(0, 0, 0, 0.03);
+            --list-item-hover-bg: rgba(0, 0, 0, 0.06);
+            --scrollbar-thumb: rgba(0, 0, 0, 0.25);
+            --scrollbar-thumb-hover: rgba(0, 0, 0, 0.4);
+            --modal-overlay: rgba(100, 116, 139, 0.4); /* Lighter overlay */
+            --audio-filter: none; /* No filter for light theme controls */
+            --menu-button-hover-bg: rgba(0, 0, 0, 0.05);
+            --menu-button-hover-color: var(--text-primary);
+            --card-face-bg: rgba(255, 255, 255, 0.7); /* Slightly more opaque card face */
+            --nav-button-bg: rgba(0, 0, 0, 0.05);
+            --nav-button-hover-bg: rgba(0, 0, 0, 0.1);
+            --add-new-btn-color: var(--text-secondary);
+            --add-new-btn-hover-bg: rgba(0, 0, 0, 0.05);
+            --add-new-btn-hover-color: var(--text-primary);
+            --add-new-btn-border: var(--glass-border);
+        }
+
+        /* Colorful Theme */
+        html[data-theme="colorful"] {
+            --bg-gradient-start: #051937;    /* Deep Navy */
+            --bg-gradient-end: #004d7a;      /* Royal Blue */
+            --glass-bg: rgba(0, 77, 122, 0.4); /* Blue Glass */
+            --glass-border: rgba(255, 255, 255, 0.13);
+            --text-primary: rgba(240, 255, 255, 0.95); /* Ice White */
+            --text-secondary: rgba(202, 240, 248, 0.7); /* Light Blue */
+            --accent-color: #00F5A0;         /* Neon Mint */
+            --accent-hover: #00c07a;         /* Deeper Mint */
+            --border-radius-lg: 1.2rem;
+            --border-radius-md: 0.7rem;
+            --blur-intensity: 14px;
+            --shadow-color: rgba(0, 12, 30, 0.35);
+            --input-bg: rgba(0, 20, 40, 0.5); /* Darker blue input */
+            --input-focus-bg: rgba(0, 20, 40, 0.7);
+            --list-item-bg: rgba(255, 255, 255, 0.05);
+            --list-item-hover-bg: rgba(255, 255, 255, 0.1);
+            --scrollbar-thumb: rgba(255, 255, 255, 0.25);
+            --scrollbar-thumb-hover: rgba(255, 255, 255, 0.4);
+            --modal-overlay: rgba(5, 25, 55, 0.6);
+            --audio-filter: invert(1) brightness(0.8) contrast(1.2); /* Invert for dark bg */
+            --menu-button-hover-bg: rgba(255, 255, 255, 0.1);
+            --menu-button-hover-color: white;
+            --card-face-bg: rgba(255, 255, 255, 0.08);
+            --nav-button-bg: rgba(255, 255, 255, 0.1);
+            --nav-button-hover-bg: rgba(255, 255, 255, 0.15);
+            --add-new-btn-color: var(--text-secondary);
+            --add-new-btn-hover-bg: rgba(255, 255, 255, 0.05);
+            --add-new-btn-hover-color: var(--text-primary);
+            --add-new-btn-border: var(--glass-border);
+        }
+
+        /* Dark Theme */
+        html[data-theme="dark"] {
+              --bg-gradient-start: #1a1a1a;    /* Dark Charcoal */
+            --bg-gradient-end: #111111;      /* Near Black */
+            --glass-bg: rgba(26, 26, 26, 0.55); /* Darker Glass based on bg */
+            --glass-border: rgba(255, 255, 255, 0.07); /* Subtle light border */
+            --text-primary: #e0e0e0;         /* Light Gray (not pure white) */
+            --text-secondary: #a0a0a0;       /* Medium Gray */
+            --accent-color: #0ea5e9;         /* Sky Blue (pops well) */
+            --accent-hover: #0284c7;         /* Deeper Sky Blue */
+            --border-radius-lg: 1.25rem;
+            --border-radius-md: 0.75rem;
+            --blur-intensity: 16px;          /* Slightly more blur can look good */
+            --shadow-color: rgba(0, 0, 0, 0.45); /* Deeper shadow */
+            --input-bg: rgba(17, 17, 17, 0.6); /* Based on end gradient */
+            --input-focus-bg: rgba(17, 17, 17, 0.8);
+            --list-item-bg: rgba(255, 255, 255, 0.04);
+            --list-item-hover-bg: rgba(255, 255, 255, 0.08);
+            --scrollbar-thumb: rgba(255, 255, 255, 0.2);
+            --scrollbar-thumb-hover: rgba(255, 255, 255, 0.35);
+            --modal-overlay: rgba(0, 0, 0, 0.7); /* Darker overlay */
+            --audio-filter: invert(1) brightness(0.9) contrast(1.1); /* Adjusted filter */
+            --menu-button-hover-bg: rgba(255, 255, 255, 0.08);
+            --menu-button-hover-color: var(--text-primary);
+            --card-face-bg: rgba(30, 30, 30, 0.6); /* Darker card face */
+            --nav-button-bg: rgba(255, 255, 255, 0.06);
+            --nav-button-hover-bg: rgba(255, 255, 255, 0.12);
+            --add-new-btn-color: var(--text-secondary);
+            --add-new-btn-hover-bg: rgba(255, 255, 255, 0.04);
+            --add-new-btn-hover-color: var(--text-primary);
+            --add-new-btn-border: var(--glass-border);
+        }
+
+
+        /* --- Base Styles using Variables --- */
         * {
             margin: 0;
             padding: 0;
@@ -14,487 +120,718 @@
 
         body {
             min-height: 100vh;
-            background: linear-gradient(135deg, #5935a0 0%, #8568c1 100%);
-            font-family: 'Echo Easy', sans-serif;
-            color: rgba(255, 255, 255, 0.8); /* White with 70% opacity */
+            background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
+            font-family: 'Inter', sans-serif;
+            color: var(--text-primary);
             padding: 2rem;
+            overflow: hidden; /* Prevent body scroll */
+            transition: background 0.3s ease; /* Smooth background transition */
         }
 
         .container {
             max-width: 1600px;
             margin: 0 auto;
+            height: calc(100vh - 4rem); /* Full height minus padding */
+            display: flex;
+            flex-direction: column;
         }
 
         .header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 2rem;
+            margin-bottom: 1.5rem; /* Reduced margin */
+            flex-shrink: 0; /* Prevent header shrinking */
+        }
+
+        .header h1 {
+            font-weight: 600;
+            display: flex; /* Use flex for alignment */
+            align-items: center;
+            gap: 0.75rem; /* Space between icon and text */
+            cursor: pointer;
+            position: relative;
+        }
+
+        .header h1 img {
+             width: 40px; /* Slightly smaller logo */
+             height: 40px;
+             vertical-align: middle; /* Already handled by flex */
+        }
+
+        /* Menu Style */
+        #menu {
+             display: none;
+             position: absolute;
+             top: calc(100% + 10px); /* Position below header */
+             left: 0;
+             background: var(--glass-bg);
+             border: 1px solid var(--glass-border);
+             border-radius: var(--border-radius-md);
+             padding: 0.5rem;
+             z-index: 1000;
+             backdrop-filter: blur(var(--blur-intensity));
+             box-shadow: 0 4px 12px var(--shadow-color);
+             min-width: 180px; /* Ensure enough width */
+             transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+         }
+
+        #menu button {
+            display: block;
+            width: 100%;
+            text-align: left;
+            padding: 0.6rem 0.8rem; /* Slightly more padding */
+            border: none;
+            background: none;
+            color: var(--text-primary);
+            cursor: pointer;
+            border-radius: 4px; /* Subtle border radius for buttons */
+            font-size: 0.9rem;
+            transition: background-color 0.2s ease, color 0.2s ease;
+        }
+
+        #menu button:hover {
+            background-color: var(--menu-button-hover-bg);
+            color: var(--menu-button-hover-color);
         }
 
         .main-content {
             display: grid;
             grid-template-columns: 1.2fr 1.8fr 1.0fr;
-            gap: 2rem;
-            height: 80vh;
+            gap: 1.5rem; /* Slightly reduced gap */
+            flex-grow: 1; /* Allow content to fill remaining space */
+            height: 0; /* Hack to make flex-grow work with grid */
+            min-height: 500px; /* Ensure minimum height */
         }
 
         .glass-panel {
-            background: rgba(70, 50, 100, 0.2);
-            backdrop-filter: blur(10px);
-            border-radius: 1rem;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            padding: 2rem;
-        }
-
-        .input-area {
+            background: var(--glass-bg);
+            backdrop-filter: blur(var(--blur-intensity));
+            border-radius: var(--border-radius-lg);
+            border: 1px solid var(--glass-border);
+            padding: 1.5rem; /* Consistent padding */
+            box-shadow: 0 6px 24px var(--shadow-color);
             display: flex;
             flex-direction: column;
-            height: 82vh;
+            overflow: hidden; /* Contain children */
+            transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        /* --- Left Column --- */
+        .input-area {
+           gap: 1rem; /* Space between elements */
         }
 
         .card-list {
             display: flex;
             flex-direction: column;
-            height: 75vh;
+            height: 100%; /* Fill the panel */
+            overflow: hidden;
         }
 
         .card-list-items {
+            flex-grow: 1;
             overflow-y: auto;
             margin-bottom: 1rem;
+            padding-right: 5px; /* Space for scrollbar */
         }
 
-        .card-list-items::-webkit-scrollbar {
-            width: 0px;
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent; /* Invisible track */
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--scrollbar-thumb);
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--scrollbar-thumb-hover);
+        }
+        /* Ensure scrollbars only appear when needed */
+        .card-list-items, .right-column, #playlist, .full-text-view > div {
+             scrollbar-width: thin; /* Firefox */
+             scrollbar-color: var(--scrollbar-thumb) transparent; /* Firefox */
         }
 
-        .card-list-items::-webkit-scrollbar-track {
-            background: rgba(255, 255, 255, 0.1);
-        }
-
-        .card-list-items::-webkit-scrollbar-thumb {
-            background: rgba(255, 255, 255, 0.3);
-            border-radius: 5px;
-        }
-
-        .card-list-items::-webkit-scrollbar-thumb:hover {
-            background: rgba(255, 255, 255, 0.5);
-        }
 
         .card-list-item {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 0.5rem;
-            padding: 1rem;
-            margin-bottom: 0.5rem;
+            background: var(--list-item-bg); /* Use theme variable */
+            border-radius: var(--border-radius-md);
+            padding: 0.8rem 1rem; /* Adjusted padding */
+            margin-bottom: 0.6rem;
             cursor: pointer;
-            transition: background 0.2s;
+            transition: background 0.2s ease-in-out, transform 0.1s ease, border-color 0.2s ease;
+            border: 1px solid transparent; /* Placeholder for hover border */
+            position: relative; /* For absolute positioned elements if needed */
         }
 
         .card-list-item:hover {
-            background: rgba(255, 255, 255, 0.2);
+            background: var(--list-item-hover-bg); /* Use theme variable */
+            border-color: var(--glass-border);
+            transform: translateY(-1px); /* Subtle lift */
         }
 
         .card-list-item-title {
-            font-weight: bold;
-            margin-bottom: 0.5rem;
+            font-weight: 500; /* Medium weight */
+            margin-bottom: 0.25rem;
+            color: var(--text-primary);
+            font-size: 0.95rem;
         }
 
         .card-list-item-count {
-            font-size: 0.875rem;
-            opacity: 0.7;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
         }
 
-        .card-list-item-actions {
-            display: flex;
-            align-items: center;
-            margin-left: auto;
+         .card-list-item-actions {
+             display: flex;
+             align-items: center;
+             gap: 0.5rem; /* Space between buttons */
+         }
+
+         .card-list-item-edit-btn,
+         .card-list-item-delete-btn {
+             background: none;
+             border: none;
+             cursor: pointer;
+             color: var(--text-secondary); /* Use secondary text color */
+             font-size: 0.9rem; /* Slightly smaller icon */
+             opacity: 0.7;
+             transition: opacity 0.2s, color 0.2s, background-color 0.2s;
+             padding: 0.3rem;
+             border-radius: 4px;
+         }
+
+         .card-list-item-edit-btn:hover,
+         .card-list-item-delete-btn:hover {
+             opacity: 1;
+             color: var(--text-primary); /* Use primary on hover */
+             background-color: var(--list-item-hover-bg); /* Subtle background */
+         }
+
+        textarea, input[type="text"], input[type="password"], input[type="file"], select {
+            width: 100%;
+            background: var(--input-bg); /* Use theme variable */
+            border: 1px solid var(--glass-border);
+            border-radius: var(--border-radius-md);
+            color: var(--text-primary);
+            padding: 0.75rem 1rem;
+            margin-bottom: 1rem;
+            font-family: inherit; /* Use body font */
+            font-size: 0.95rem;
+            transition: border-color 0.2s, background-color 0.2s, color 0.2s;
         }
 
-        .card-list-item-edit-btn,
-        .card-list-item-delete-btn {
-            background: none;
-            border: none;
-            cursor: pointer;
-            font-size: 1rem;
-            margin-left: 0.5rem;
-            opacity: 0.7;
-            transition: opacity 0.2s;
-            padding: 0.2rem;
+        textarea::placeholder, input::placeholder {
+            color: var(--text-secondary);
+            opacity: 0.8;
+            transition: color 0.2s;
         }
 
-        .card-list-item-edit-btn:hover,
-        .card-list-item-delete-btn:hover {
-            opacity: 1;
+        textarea:focus, input:focus, select:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            background-color: var(--input-focus-bg); /* Use theme variable */
         }
 
         textarea {
             flex-grow: 1;
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 0.5rem;
-            color: white;
-            padding: 1rem;
-            margin-bottom: 1rem;
-            resize: none;
-            min-height: 200px;
+            resize: none; /* Keep resize off */
+            min-height: 150px; /* Adjust as needed */
         }
 
         button {
-            background: rgba(255, 255, 255, 0.2);
+            background: var(--accent-color);
             border: none;
-            padding: 0.5rem 1rem;
-            color: white;
-            border-radius: 0.5rem;
+            padding: 0.75rem 1.25rem; /* More padding */
+            color: white; /* Assuming accent colors work best with white text */
+            border-radius: var(--border-radius-md);
             cursor: pointer;
-            transition: background 0.3s;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: background-color 0.2s ease-in-out, transform 0.1s ease, color 0.2s;
+            display: inline-flex; /* Align icon and text */
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
         }
 
         button:hover {
-            background: rgba(255, 255, 255, 0.3);
+            background: var(--accent-hover);
+            transform: translateY(-1px); /* Subtle lift */
         }
 
-        .settings-btn {
-            background: none;
-            border: 1px solid rgba(255, 255, 255, 0.2);
+        button:active {
+            transform: translateY(0);
+        }
+
+        /* Specific Button Styles */
+        .settings-btn, .return-btn {
+            /* These buttons might need theme-specific adjustments if the default looks bad */
+            background: var(--nav-button-bg); /* Using nav button variable */
+            border: 1px solid var(--glass-border);
+            color: var(--text-primary);
+        }
+        .settings-btn:hover, .return-btn:hover {
+             background: var(--nav-button-hover-bg); /* Using nav button variable */
+             border-color: rgba(255, 255, 255, 0.25); /* Keep this maybe? Or use a variable */
         }
 
         .add-new-btn {
             width: 100%;
-            padding: 1rem;
-            background: rgba(255, 255, 255, 0.2);
-            border: none;
-            color: white;
-            border-radius: 0.5rem;
-            cursor: pointer;
-            transition: background 0.3s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
+            padding: 0.8rem; /* Slightly less padding */
+            background: transparent; /* Make it less prominent */
+            border: 1px dashed var(--add-new-btn-border); /* Use theme variable */
+            color: var(--add-new-btn-color); /* Use theme variable */
+            font-weight: 400;
+            transition: background-color 0.2s, color 0.2s, border-color 0.2s;
         }
+        .add-new-btn span { font-size: 1.2rem; }
 
         .add-new-btn:hover {
-            background: rgba(255, 255, 255, 0.3);
+            background: var(--add-new-btn-hover-bg); /* Use theme variable */
+            color: var(--add-new-btn-hover-color); /* Use theme variable */
+            border-color: var(--accent-color); /* Highlight with accent */
         }
 
         .return-btn {
             margin-bottom: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            background: none;
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            align-self: flex-start; /* Align to top left */
         }
 
-        .create-view {
-            display: none;
-            height: 100%;
+        /* View Visibility */
+        .create-view, .list-view, .full-text-view {
+             display: none;
+             height: 100%;
+             flex-direction: column; /* Ensure flex direction */
         }
+        .visible { display: flex; } /* Use flex for all */
+        .list-view.visible { display: flex; } /* Explicitly flex */
 
-        .create-view.visible {
-            display: flex;
-            flex-direction: column;
-        }
 
-        .list-view {
-            display: none;
-            height: 100%;
-        }
-
-        .list-view.visible {
-            display: block;
-        }
-
+        /* --- Middle Column --- */
         .flashcard-container {
-            display: flex;
-            flex-direction: column;
-            height: 100%;
+            justify-content: space-between; /* Space out card and nav */
+            align-items: center; /* Center horizontally */
         }
 
         .flashcard {
+            width: 100%;
             flex-grow: 1;
             cursor: pointer;
             position: relative;
-            text-align: center;
-            transition: transform 0.6s;
+            perspective: 1000px; /* Needed for 3D flip */
             display: flex;
             align-items: center;
             justify-content: center;
-            min-height: 300px;
+            min-height: 250px; /* Adjust min height */
+            margin-bottom: 1rem; /* Space before nav */
+            transform-style: preserve-3d; /* Enable 3D */
+            transition: transform 0.7s cubic-bezier(0.4, 0.2, 0.2, 1); /* Smooth flip */
         }
 
         .card-face {
             position: absolute;
             inset: 0;
             backface-visibility: hidden;
+            -webkit-backface-visibility: hidden; /* Safari */
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            transition: opacity 0.3s;
+            padding: 2rem;
+            text-align: center;
+            background: var(--card-face-bg); /* Use theme variable */
+            border-radius: var(--border-radius-md);
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1); /* Consider a shadow variable too */
+            transition: opacity 0.3s ease-in-out, background-color 0.3s ease, border-color 0.3s ease; /* Added transitions */
         }
 
         .card-face.back {
-            opacity: 0;
+            transform: rotateY(180deg); /* Initially hide back face */
         }
 
-        .flashcard.flipped .card-face.front {
-            opacity: 0;
-        }
-
-        .flashcard.flipped .card-face.back {
-            opacity: 1;
+        /* Flip animation */
+        .flashcard.flipped {
+            transform: rotateY(180deg);
         }
 
         .flashcard-text {
-            font-size: 2rem;
-            margin-bottom: 1rem;
-            padding: 0 2rem;
-        }
-
-        .flashcard-hint {
-            font-size: 0.875rem;
-            opacity: 0.7;
+            font-size: clamp(1.2rem, 4vw, 1.75rem); /* Responsive font size */
+            font-weight: 400;
+            line-height: 1.5;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+            transition: color 0.3s ease;
         }
 
         .navigation {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-top: 1rem;
-            padding: 1rem 0;
+            width: 100%;
+            padding: 0.5rem 0; /* Reduced padding */
+            border-top: 1px solid var(--glass-border); /* Separator line */
+            margin-top: auto; /* Push to bottom */
+            transition: border-color 0.3s ease;
         }
 
+        .navigation button {
+            background: var(--nav-button-bg); /* Use theme variable */
+            color: var(--text-primary);
+            padding: 0.5rem 1rem; /* Smaller nav buttons */
+            font-size: 1.2rem; /* Larger arrows */
+            line-height: 1;
+            transition: background-color 0.2s ease, color 0.2s ease;
+        }
+        .navigation button:hover {
+            background: var(--nav-button-hover-bg); /* Use theme variable */
+        }
+        .navigation span {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        /* --- Right Column (Music Player) --- */
+         .right-column {
+             opacity: 1;
+             padding: 1.5rem;
+             gap: 1rem; /* Space elements vertically */
+             align-items: center;
+         }
+
+         .right-column h2 {
+             font-weight: 500;
+             font-size: 1.1rem;
+             margin-bottom: 0.5rem; /* Reduced margin */
+             text-align: center;
+             width: 100%;
+             color: var(--text-primary);
+             transition: color 0.3s ease;
+         }
+
+        /* Style the HTML5 audio player */
+         audio {
+             width: 100%;
+             filter: var(--audio-filter); /* Use theme variable for filter */
+             margin-bottom: 1rem;
+             transition: filter 0.3s ease;
+         }
+
+         /* Style file input */
+         input[type="file"] {
+             margin-bottom: 1rem;
+             background: none;
+             border: none;
+             padding: 0;
+             color: var(--text-secondary); /* Style the "No file chosen" text */
+         }
+        /* Custom styling for the file input button */
+        input[type="file"]::file-selector-button {
+            background: var(--nav-button-bg); /* Reuse nav button style */
+            border: 1px solid var(--glass-border);
+            color: var(--text-primary);
+            padding: 0.5rem 1rem;
+            border-radius: var(--border-radius-md);
+            cursor: pointer;
+            transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+            font-family: inherit;
+            font-size: 0.85rem;
+        }
+        input[type="file"]::file-selector-button:hover {
+            background: var(--nav-button-hover-bg); /* Reuse nav button style */
+        }
+
+         #playlist {
+             width: 100%;
+             list-style: none;
+             padding: 0;
+             margin: 0;
+             flex-grow: 1;
+             overflow-y: auto;
+             padding-right: 5px; /* Space for scrollbar */
+         }
+
+         #playlist li {
+             background: var(--list-item-bg); /* Use theme variable */
+             border-radius: var(--border-radius-md);
+             padding: 0.6rem 0.8rem;
+             margin-bottom: 0.4rem;
+             cursor: pointer;
+             font-size: 0.85rem;
+             color: var(--text-secondary);
+             white-space: nowrap;
+             overflow: hidden;
+             text-overflow: ellipsis;
+             transition: background 0.2s ease, color 0.2s ease;
+         }
+         /* Highlight style will be handled by JS */
+         #playlist li:hover {
+             background: var(--list-item-hover-bg);
+             color: var(--text-primary);
+         }
+
+
+        /* --- Modal --- */
         .modal {
             display: none;
             position: fixed;
             inset: 0;
-            background: rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(5px);
+            background: var(--modal-overlay); /* Use theme variable */
+            backdrop-filter: blur(8px); /* Slightly less blur than panels */
             padding: 2rem;
             z-index: 1000;
-        }
-
-        .modal.visible {
-            display: flex;
             align-items: center;
             justify-content: center;
+            transition: background-color 0.3s ease;
         }
+        .modal.visible { display: flex; }
 
         .modal-content {
             width: 100%;
             max-width: 500px;
         }
+        /* Modal content uses .glass-panel, so it inherits theme styles */
+        .modal-content h2 {
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+            text-align: center;
+        }
+        .modal-content label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+        .modal-content select {
+             margin-bottom: 1.5rem; /* More space before save */
+        }
+         .modal-content button { /* Style save button */
+             width: 100%;
+         }
 
+        /* --- Loading Indicator --- */
         .loading {
             display: none;
             text-align: center;
-            padding: 1rem;
+            padding: 1.5rem;
+            font-size: 1.1rem;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1100;
+            /* Uses .glass-panel, inherits theme styles */
         }
-
-        .loading.visible {
-            display: block;
-        }
+        .loading.visible { display: block; }
 
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
-
         .loading::after {
-            content: "⏳";
+            content: "";
             display: inline-block;
+            width: 1.2em;
+            height: 1.2em;
+            margin-left: 0.8rem;
+            border: 3px solid rgba(255, 255, 255, 0.3); /* Spinner base color might need adjustment */
+            border-top-color: var(--text-primary); /* Spinner active color */
+            border-radius: 50%;
             animation: spin 1s linear infinite;
-            margin-left: 0.5rem;
+            vertical-align: middle;
+            transition: border-color 0.3s ease;
+        }
+        /* Specific spinner color for light theme if needed */
+        html[data-theme="light"] .loading::after {
+            border: 3px solid rgba(0, 0, 0, 0.15);
+            border-top-color: var(--text-primary);
         }
 
-        input {
-            width: 100%;
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 0.5rem;
-            color: white;
-            padding: 0.75rem;
-            margin: 0.5rem 0 1rem;
-        }
 
-        .right-column {
-            opacity: 0.5;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
+        /* --- Full Text View --- */
+        .full-text-view {
+             gap: 1rem;
         }
-
-        .right-column::-webkit-scrollbar {
-            width: 5px;
-        }
-
-        .right-column::-webkit-scrollbar-track {
-            background: rgba(255, 255, 255, 0.1);
-        }
-
-        .right-column::-webkit-scrollbar-thumb {
-            background: rgba(255, 255, 255, 0.3);
-            border-radius: 5px;
-        }
-
-        .right-column::-webkit-scrollbar-thumb:hover {
-            background: rgba(255, 255, 255, 0.5);
-        }
-
-        #playlist {
+        .full-text-view > div {
             flex-grow: 1;
             overflow-y: auto;
-            display: flex;
-            flex-direction: column;
+            background: var(--input-bg); /* Use theme variable */
+            border-radius: var(--border-radius-md);
+            border: 1px solid var(--glass-border);
+            padding: 1rem;
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+        }
+         #fullTextContent {
+             white-space: pre-wrap;
+             font-size: 0.95rem;
+             line-height: 1.6;
+             color: var(--text-secondary);
+             transition: color 0.3s ease;
+         }
+
+         /* --- Responsive Adjustments --- */
+        @media (max-width: 1200px) {
+            .main-content {
+                grid-template-columns: 1fr 1.5fr 0.8fr;
+            }
+        }
+        @media (max-width: 992px) {
+            body { padding: 1rem; }
+            .container { height: calc(100vh - 2rem); }
+            .header { margin-bottom: 1rem; }
+            .main-content {
+                grid-template-columns: 1fr 1.5fr;
+                grid-template-rows: auto auto;
+                height: auto;
+                min-height: 0;
+            }
+            .right-column {
+                grid-column: 1 / -1;
+                max-height: 250px;
+            }
+             .flashcard-text { font-size: clamp(1.1rem, 3.5vw, 1.5rem); }
+        }
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            .right-column { max-height: none; }
+            .glass-panel { padding: 1rem; }
+            .header h1 { font-size: 1.5rem; gap: 0.5rem; }
+            .header h1 img { width: 30px; height: 30px;}
+            button { padding: 0.6rem 1rem; font-size: 0.9rem; }
+            .navigation button { padding: 0.4rem 0.8rem; font-size: 1rem; }
         }
 
-        .full-text-view {
-            display: none;
-            height: 100%;
-        }
-
-        .full-text-view.visible {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .full-text-view > div::-webkit-scrollbar {
-            width: 5px;
-        }
-
-        .full-text-view > div::-webkit-scrollbar-track {
-            background: rgba(255, 255, 255, 0.1);
-        }
-
-        .full-text-view > div::-webkit-scrollbar-thumb {
-            background: rgba(255, 255, 255, 0.3);
-            border-radius: 5px;
-        }
-
-        .full-text-view > div::-webkit-scrollbar-thumb:hover {
-            background: rgba(255, 255, 255, 0.5);
-        }
-
-        .dark-mode {
-            background: linear-gradient(135deg, #1a1a2e 0%, #3f325a 100%);
-        }
     </style>
 </head>
 <body>
     <div class="container">
         <header class="header">
-            <h1 style="display: inline-block; vertical-align: middle; cursor: pointer; position: relative;" onclick="toggleMenu()"><img src="tarjetapplogo.png" alt="TarjetApp Logo" width="50" height="50" style="vertical-align: middle;"> TarjetApp
-                <div id="menu" style="display: none; position: absolute; top: 100%; left: 0; background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 0.5rem; padding: 0.5rem; z-index: 100; backdrop-filter: blur(10px);">
-                    <button onclick="toggleMergeMode()" style="display: block; width: 100%; text-align: left; padding: 0.5rem; border: none; background: none; color: white; cursor: pointer;">Merge Mode</button>
-                    <button onclick="toggleSettings()" style="display: block; width: 100%; text-align: left; padding: 0.5rem; border: none; background: none; color: white; cursor: pointer;">Model Selection</button>
-                    <button onclick="exportCards()" style="display: block; width: 100%; text-align: left; padding: 0.5rem; border: none; background: none; color: white; cursor: pointer;">Export Cards</button>
-                    <button onclick="importCards()" style="display: block; width: 100%; text-align: left; padding: 0.5rem; border: none; background: none; color: white; cursor: pointer;">Import Cards</button>
-                    <button onclick="toggleDarkMode()" style="display: block; width: 100%; text-align: left; padding: 0.5rem; border: none; background: none; color: white; cursor: pointer;">Dark Mode</button>
-                </div>
-            </h1>
+             <h1 onclick="toggleMenu()">
+                 <img src="tarjetapplogo.png" alt="TarjetApp Logo"> TarjetApp
+                 <div id="menu">
+                     <button onclick="cycleTheme()">Color Theme</button>
+                     <button onclick="toggleMergeMode()">Merge Mode</button>
+                     <button onclick="toggleSettings()">Model Selection</button>
+                     <button onclick="exportCards()">Export Cards</button>
+                     <button onclick="importCards()">Import Cards</button>
+                 </div>
+             </h1>
         </header>
 
         <div class="main-content">
-            <!-- Left Column -->
+            <!-- Left Column: Input/List -->
             <div class="glass-panel input-area">
-                <!-- List View -->
+                <!-- Card List View -->
                 <div id="cardListView" class="list-view visible">
                     <div class="card-list">
                         <div class="card-list-items" id="cardListItems">
-                            <!-- Cards will be inserted here -->
+                            <!-- Card list items will be injected here -->
                         </div>
                         <button class="add-new-btn" onclick="showCreateView()">
-                            <span>+</span> Add New Flashcards
+                            <i class="fa-solid fa-plus"></i> Add New Flashcards
                         </button>
                     </div>
                 </div>
 
                 <!-- Full Text View -->
-                <div id="fullTextView" class="full-text-view">
-                    <button class="return-btn" onclick="showListView()">
-                        ← Return to List
-                    </button>
-                    <div style="overflow-y: auto; height: 70vh;">
-                        <div id="fullTextContent" style="white-space: pre-wrap; padding: 1rem;"></div>
-                    </div>
-                </div>
+                 <div id="fullTextView" class="full-text-view">
+                     <button class="return-btn" onclick="showListView()">
+                         <i class="fa-solid fa-arrow-left"></i> Return to List
+                     </button>
+                     <div>
+                         <div id="fullTextContent"></div>
+                     </div>
+                 </div>
 
-                <!-- Create View -->
+                <!-- Create Card View -->
                 <div id="createCardView" class="create-view">
                     <button class="return-btn" onclick="showListView()">
-                        ← Return to List
+                        <i class="fa-solid fa-arrow-left"></i> Return to List
                     </button>
-                    <textarea id="textInput" placeholder=""></textarea> 
-                    <button style="padding: 1rem;" onclick="createFlashcards()">Create Flashcards</button>
+                    <textarea id="textInput" placeholder="Paste your Spanish text here... sentences separated by new lines work best."></textarea>
+                    <button onclick="createFlashcards()"><i class="fa-solid fa-bolt"></i> Create Flashcards</button>
                 </div>
             </div>
 
-            <!-- Middle Column -->
+            <!-- Middle Column: Flashcard -->
             <div id="flashcardContainer" class="glass-panel flashcard-container">
-                <div class="flashcard" onclick="toggleCard()">
-                    <div class="card-face front">
-                        <div class="flashcard-text" id="frontText">Enter text and click create</div>
-                    </div>
-                    <div class="card-face back">
-                        <div class="flashcard-text" id="backText"></div>
-                    </div>
-                </div>
+                 <div class="flashcard" onclick="toggleCard()">
+                     <div class="card-face front">
+                         <div class="flashcard-text" id="frontText">Enter text and click create</div>
+                         <!-- Original Spanish -->
+                     </div>
+                     <div class="card-face back">
+                         <div class="flashcard-text" id="backText"></div>
+                         <!-- English Translation -->
+                     </div>
+                 </div>
                 <div class="navigation">
-                    <button onclick="prevCard()">←</button>
+                    <button onclick="prevCard()"><i class="fa-solid fa-chevron-left"></i></button>
                     <span id="cardCount">0/0</span>
-                    <button onclick="nextCard()">→</button>
+                    <button onclick="nextCard()"><i class="fa-solid fa-chevron-right"></i></button>
                 </div>
             </div>
 
-            <!-- Right Column - Music Player -->
+            <!-- Right Column: Music Player -->
             <div class="glass-panel right-column">
-                <div style="display: flex; flex-direction: column; align-items: center;">
-                    <h2 style="margin-bottom: 1rem;">Music Player</h2>
-                    <audio id="audioPlayer" controls style="width: 100%;"></audio>
-                    <input type="file" id="audioFile" accept="audio/*" multiple style="margin-bottom: 1rem;">
-                    <ul id="playlist" style="list-style: none; padding: 0; margin-bottom: 1rem;"></ul>                    
-                </div>
+                 <h2><i class="fa-solid fa-music"></i> Music Player</h2>
+                 <audio id="audioPlayer" controls></audio>
+                 <input type="file" id="audioFile" accept="audio/*" multiple>
+                 <ul id="playlist"></ul>
             </div>
         </div>
 
+        <!-- Loading Indicator -->
         <div id="loadingIndicator" class="loading glass-panel">
-            Translating your text...
+            Generating flashcards...
+            <!-- Spinner is added via CSS pseudo-element -->
         </div>
     </div>
 
+    <!-- Settings Modal -->
     <div id="settingsModal" class="modal">
         <div class="modal-content glass-panel">
-            <h2>API Keys</h2>
-            <div style="height: 1rem;"></div>
+            <h2><i class="fa-solid fa-sliders"></i> Settings</h2>
             <div>
                 <label for="apiKey">Gemini API Key</label>
-                <input 
-                    type="password" 
-                    id="apiKey" 
+                <input
+                    type="password"
+                    id="apiKey"
                     placeholder="Enter your Gemini API key"
                     onchange="saveApiKey(event)"
                 >
             </div>
-            <div>
-                <label for="xaiApiKey">xAI API Key</label>
+             <div>
+                <label for="mistralApiKey">Mistral API Key</label> <!-- Changed Label -->
                 <input
                     type="password"
-                    id="xaiApiKey"
-                    placeholder="Enter your xAI API key"
-                    onchange="saveXaiApiKey(event)"
+                    id="mistralApiKey"                           <!-- Changed ID -->
+                    placeholder="Enter your Mistral API key"     <!-- Changed Placeholder -->
+                    onchange="saveMistralApiKey(event)"          <!-- Changed Function -->
                 />
             </div>
             <div>
                 <label for="modelSelect">Model</label>
                 <select id="modelSelect">
-                    <option value="gemini-pro">Gemini</option>
-                    <option value="grok-2-1212">Grok</option>
+                    <option value="gemini">Gemini</option>
+                    <option value="mistral-small-latest">Mistral Small</option>  <!-- Added Mistral Option -->
+                    <option value="open-mistral-7b">Mistral 7B (Open)</option> <!-- Added Mistral Option -->
                 </select>
             </div>
-            <div style="height: 1rem;"></div>
-            <button onclick="toggleSettings()">Save</button>
+            <button onclick="toggleSettings()"><i class="fa-solid fa-floppy-disk"></i> Save & Close</button>
         </div>
     </div>
+
 
     <script>
         let flashcards = [];
@@ -503,110 +840,243 @@
         let savedCardSets = [];
         let mergeMode = false;
 
-        function toggleMergeMode() {
-            mergeMode = !mergeMode;
-            updateCard();
+        // --- Theme Switching Logic ---
+        const themes = ['light', 'colorful', 'dark']; // Order specified by user
+        const themeStorageKey = 'tarjetapp-theme';
+
+        function applyTheme(themeName) {
+            if (themes.includes(themeName)) {
+                document.documentElement.setAttribute('data-theme', themeName);
+                localStorage.setItem(themeStorageKey, themeName);
+                // Update playlist highlight based on new theme variables
+                updatePlaylistHighlight();
+            } else {
+                console.warn(`Invalid theme name: ${themeName}. Applying default.`);
+                applyTheme(themes[2]); // Default to dark
+            }
         }
 
+        function cycleTheme() {
+            const currentTheme = localStorage.getItem(themeStorageKey) || document.documentElement.getAttribute('data-theme') || themes[2];
+            const currentIndex = themes.indexOf(currentTheme);
+            const nextIndex = (currentIndex + 1) % themes.length;
+            const nextTheme = themes[nextIndex];
+            applyTheme(nextTheme);
+            toggleMenu(); // Close menu after selection
+        }
+        // --- End Theme Switching Logic ---
+
+
+        function toggleMergeMode() {
+            mergeMode = !mergeMode;
+            const flashcardEl = document.querySelector('.flashcard');
+            flashcardEl.classList.toggle('merge-mode', mergeMode);
+            isFlipped = false;
+            updateCard();
+            toggleMenu();
+        }
+
+
         document.addEventListener('DOMContentLoaded', () => {
+            // Load saved theme or apply default
+            const savedTheme = localStorage.getItem(themeStorageKey);
+            if (savedTheme) {
+                applyTheme(savedTheme);
+            } else {
+                // Default theme is set in HTML tag initially, no need to apply again unless enforcing a specific default
+                applyTheme(document.documentElement.getAttribute('data-theme') || themes[2]);
+            }
+
+
             const apiKeyInput = document.getElementById('apiKey');
             apiKeyInput.value = localStorage.getItem('apiKey') || '';
-            const xaiApiKeyInput = document.getElementById('xaiApiKey');
-            xaiApiKeyInput.value = localStorage.getItem('xaiApiKey') || '';
-            
-            // Load saved card sets from localStorage if available
+            // --- MODIFIED: Load Mistral API Key ---
+            const mistralApiKeyInput = document.getElementById('mistralApiKey');
+            mistralApiKeyInput.value = localStorage.getItem('mistralApiKey') || '';
+            // --- END MODIFICATION ---
+
             const savedSets = localStorage.getItem('savedCardSets');
             if (savedSets) {
-                savedCardSets = JSON.parse(savedSets);
+                try {
+                   savedCardSets = JSON.parse(savedSets);
+                } catch (e) {
+                   console.error("Error parsing saved card sets from localStorage", e);
+                   savedCardSets = [];
+                   localStorage.removeItem('savedCardSets');
+                }
                 updateCardList();
+            }
+
+            document.addEventListener('click', function(event) {
+                const menu = document.getElementById('menu');
+                const headerTitle = document.querySelector('.header h1');
+                if (menu.style.display === 'block' && !menu.contains(event.target) && !headerTitle.contains(event.target)) {
+                    menu.style.display = 'none';
+                }
+            });
+
+            // Initial playlist highlight check in case theme loaded changes colors
+            if (currentSongIndex !== -1) {
+                updatePlaylistHighlight();
             }
         });
 
         function toggleMenu() {
             const menu = document.getElementById('menu');
-            menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
+            menu.style.display = menu.style.display === 'none' || menu.style.display === '' ? 'block' : 'none';
         }
 
+
         function exportCards() {
-            const cardSets = JSON.stringify(savedCardSets);
-            const blob = new Blob([cardSets], { type: 'application/json' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = 'tarjetapp_cards.json';
-            a.click();
-            URL.revokeObjectURL(url);
+            if (savedCardSets.length === 0) {
+                alert("No card sets to export.");
+                return;
+            }
+            try {
+                const cardSets = JSON.stringify(savedCardSets, null, 2);
+                const blob = new Blob([cardSets], { type: 'application/json;charset=utf-8' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.style.display = 'none';
+                a.href = url;
+                const date = new Date();
+                const dateString = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`;
+                a.download = `tarjetapp_cards_${dateString}.json`;
+                document.body.appendChild(a);
+                a.click();
+                URL.revokeObjectURL(url);
+                a.remove();
+            } catch (e) {
+                console.error("Error exporting cards:", e);
+                alert("An error occurred while exporting cards.");
+            }
+            toggleMenu();
         }
+
 
         function importCards() {
             const input = document.createElement('input');
             input.type = 'file';
-            input.accept = 'application/json';
+            input.accept = '.json,application/json';
+            input.style.display = 'none';
+
             input.onchange = event => {
                 const file = event.target.files[0];
                 if (!file) return;
                 const reader = new FileReader();
                 reader.onload = e => {
                     try {
-                        const importedCardSets = JSON.parse(e.target.result);
-                        if (Array.isArray(importedCardSets)) {
-                            savedCardSets = importedCardSets;
-                            localStorage.setItem('savedCardSets', JSON.stringify(savedCardSets));
-                            updateCardList();
+                        const importedData = JSON.parse(e.target.result);
+                        if (Array.isArray(importedData)) {
+                            const isValid = importedData.every(item =>
+                                typeof item === 'object' && item !== null &&
+                                'id' in item && 'title' in item && Array.isArray(item.cards)
+                            );
+
+                            if (isValid) {
+                                const confirmImport = confirm(`Import ${importedData.length} card sets? This will replace your current sets.`);
+                                if (confirmImport) {
+                                    savedCardSets = importedData;
+                                    localStorage.setItem('savedCardSets', JSON.stringify(savedCardSets));
+                                    updateCardList();
+                                    flashcards = [];
+                                    currentIndex = 0;
+                                    isFlipped = false;
+                                    updateCard();
+                                    alert("Import successful!");
+                                }
+                            } else {
+                                alert('Invalid file format: Card sets do not have the required structure (id, title, cards array).');
+                            }
                         } else {
-                            alert('Invalid file format.');
+                            alert('Invalid file format: The file should contain a JSON array of card sets.');
                         }
                     } catch (error) {
-                        alert('Error parsing file.');
+                        console.error('Error parsing import file:', error);
+                        alert(`Error parsing file: ${error.message}`);
+                    } finally {
+                        input.remove();
                     }
                 };
+                reader.onerror = () => {
+                    alert('Error reading file.');
+                    input.remove();
+                }
                 reader.readAsText(file);
             };
+
+            document.body.appendChild(input);
             input.click();
+            toggleMenu();
         }
+
 
         function editCardSetTitle(event, cardSetId) {
             event.stopPropagation();
-            const titleElement = event.target;
+            const titleElement = event.target.closest('.card-list-item').querySelector('.card-list-item-title');
+
+            if (titleElement.isContentEditable) return;
+
+            const originalTitle = titleElement.textContent;
             titleElement.contentEditable = true;
             titleElement.focus();
-            // Select all text when the title becomes editable
+
             const range = document.createRange();
             range.selectNodeContents(titleElement);
             const sel = window.getSelection();
             sel.removeAllRanges();
             sel.addRange(range);
 
-            titleElement.addEventListener('keydown', function handleEnter(event) {
-                if (event.key === 'Enter') {
-                    event.preventDefault(); // Prevent new line
-                    titleElement.blur(); // Trigger blur to save
-                    titleElement.removeEventListener('keydown', handleEnter);
-                }
-            });
+            const saveChanges = () => {
+                 titleElement.contentEditable = false;
+                 const newTitle = titleElement.textContent.trim();
+                 if (newTitle && newTitle !== originalTitle) {
+                     const cardSetIndex = savedCardSets.findIndex(set => set.id === cardSetId);
+                     if (cardSetIndex > -1) {
+                         savedCardSets[cardSetIndex].title = newTitle;
+                         localStorage.setItem('savedCardSets', JSON.stringify(savedCardSets));
+                     }
+                 } else if (!newTitle) {
+                    titleElement.textContent = originalTitle;
+                    alert("Title cannot be empty.");
+                 }
+                 titleElement.removeEventListener('blur', saveChanges);
+                 titleElement.removeEventListener('keydown', handleKeydown);
+            }
 
-            titleElement.addEventListener('blur', function handleBlur() {
-                titleElement.contentEditable = false;
-                const newTitle = titleElement.textContent;
-                if (newTitle) {
-                    const cardSetIndex = savedCardSets.findIndex(set => set.id === cardSetId);
-                    if (cardSetIndex > -1) {
-                        savedCardSets[cardSetIndex].title = newTitle;
-                        localStorage.setItem('savedCardSets', JSON.stringify(savedCardSets));
-                        updateCardList();
-                    }
+            const handleKeydown = (e) => {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    saveChanges();
+                } else if (e.key === 'Escape') {
+                    titleElement.textContent = originalTitle;
+                    saveChanges();
                 }
-                titleElement.removeEventListener('blur', handleBlur);
-            });
+            }
+
+            titleElement.addEventListener('blur', saveChanges);
+            titleElement.addEventListener('keydown', handleKeydown);
         }
+
 
         function deleteCardSet(event, cardSetId) {
             event.stopPropagation();
-            const confirmDelete = confirm('Are you sure you want to delete this card set?');
+            const cardSetToDelete = savedCardSets.find(set => set.id === cardSetId);
+            if (!cardSetToDelete) return;
+
+            const confirmDelete = confirm(`Are you sure you want to delete the set "${cardSetToDelete.title}"?`);
             if (confirmDelete) {
                 savedCardSets = savedCardSets.filter(set => set.id !== cardSetId);
                 localStorage.setItem('savedCardSets', JSON.stringify(savedCardSets));
                 updateCardList();
+
+                 if (flashcards.length > 0 && flashcards[0]?.setId === cardSetId) {
+                     flashcards = [];
+                     currentIndex = 0;
+                     isFlipped = false;
+                     updateCard();
+                     showListView(); // Go back to list if the active set was deleted
+                 }
             }
         }
 
@@ -615,52 +1085,87 @@
         }
 
         function saveApiKey(event) {
-            localStorage.setItem('apiKey', event.target.value);
+            localStorage.setItem('apiKey', event.target.value); // Gemini Key
         }
 
-        function saveXaiApiKey(event) {
-            localStorage.setItem('xaiApiKey', event.target.value);
+        // --- ADDED: Save Mistral API Key ---
+        function saveMistralApiKey(event) {
+            localStorage.setItem('mistralApiKey', event.target.value);
         }
+        // --- END ADDITION ---
+
 
         function showCreateView() {
             document.getElementById('cardListView').classList.remove('visible');
+            document.getElementById('fullTextView').classList.remove('visible');
             document.getElementById('createCardView').classList.add('visible');
+            document.getElementById('textInput').focus();
         }
 
         function showListView() {
             document.getElementById('createCardView').classList.remove('visible');
-            document.getElementById('cardListView').classList.add('visible');
             document.getElementById('fullTextView').classList.remove('visible');
+            document.getElementById('cardListView').classList.add('visible');
         }
 
-        function addToCardList(cards) {
+        function showFullTextView() {
+             document.getElementById('cardListView').classList.remove('visible');
+             document.getElementById('createCardView').classList.remove('visible');
+             document.getElementById('fullTextView').classList.add('visible');
+        }
+
+        function addToCardList(cards, originalText = "") {
+            if (!cards || cards.length === 0) return;
+
+            const firstSpanishSentence = cards[0]?.spanish || "Untitled Set";
+            const title = firstSpanishSentence.split(' ').slice(0, 5).join(' ') + (firstSpanishSentence.split(' ').length > 5 ? '...' : '');
+
             const cardSet = {
                 id: Date.now(),
-                title: cards[0].spanish.substring(0, 50) + '...',
-                cards: cards,
-                timestamp: new Date()
+                title: title,
+                cards: cards.map(card => ({ spanish: card.spanish, english: card.english })),
+                originalText: originalText,
+                timestamp: new Date().toISOString()
             };
             savedCardSets.unshift(cardSet);
             localStorage.setItem('savedCardSets', JSON.stringify(savedCardSets));
             updateCardList();
-            showListView();
+            showListView(); // Show the list after adding
+            loadCardSet(cardSet); // Load the newly created set into the viewer
         }
+
 
         function updateCardList() {
             const listContainer = document.getElementById('cardListItems');
             listContainer.innerHTML = '';
-            
+
+            if (savedCardSets.length === 0) {
+                listContainer.innerHTML = `<p style="text-align: center; padding: 2rem; color: var(--text-secondary);">No flashcard sets yet. Create one!</p>`;
+                return;
+            }
+
             savedCardSets.forEach(cardSet => {
                 const item = document.createElement('div');
                 item.className = 'card-list-item';
+                item.setAttribute('data-set-id', cardSet.id);
+
                 item.innerHTML = `
-                    <div style="display: flex; justify-content: space-between; align-items: center;">
-                        <div>
-                            <div class="card-list-item-title" onclick="editCardSetTitle(event, ${cardSet.id})">${cardSet.title}</div>
+                    <div style="display: flex; justify-content: space-between; align-items: center; gap: 0.5rem;">
+                        <div style="flex-grow: 1; min-width: 0;"> <!-- Added min-width: 0 to prevent overflow -->
+                            <div
+                                class="card-list-item-title"
+                                title="${cardSet.title}"
+                                onclick="event.stopPropagation(); editCardSetTitle(event, ${cardSet.id})"
+                                style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; cursor: text;"
+                            >
+                                ${cardSet.title}
+                            </div>
                             <div class="card-list-item-count">${cardSet.cards.length} cards</div>
                         </div>
-                        <div class="card-list-item-actions">                
-                            <button class="card-list-item-delete-btn" onclick="deleteCardSet(event, ${cardSet.id})"><i class="fa-solid fa-trash-can"></i></button>
+                        <div class="card-list-item-actions">
+                            <button class="card-list-item-delete-btn" title="Delete Set" onclick="deleteCardSet(event, ${cardSet.id})">
+                                <i class="fa-solid fa-trash-can"></i>
+                            </button>
                         </div>
                     </div>
                 `;
@@ -670,232 +1175,408 @@
         }
 
         function loadCardSet(cardSet) {
-            document.getElementById('cardListView').classList.remove('visible');
-            document.getElementById('fullTextView').classList.add('visible');
-            document.getElementById('fullTextContent').textContent = cardSet.cards.map(card => card.spanish + '\n' + card.english).join('\n\n');
-            flashcards = cardSet.cards;
+            if (!cardSet || !cardSet.cards || cardSet.cards.length === 0) {
+                 console.warn("Attempted to load invalid card set:", cardSet);
+                 flashcards = [];
+                 currentIndex = 0;
+                 isFlipped = false;
+                 updateCard();
+                 document.getElementById('fullTextContent').textContent = "No cards in this set.";
+                 showFullTextView(); // Show full text view even if empty
+                 return;
+             }
+
+            flashcards = cardSet.cards.map(card => ({ ...card, setId: cardSet.id }));
             currentIndex = 0;
             isFlipped = false;
             updateCard();
+
+            // Populate full text view
+            const fullText = flashcards.map(card => `${card.spanish}\n${card.english}`).join('\n\n---\n\n');
+            document.getElementById('fullTextContent').textContent = fullText || "No text to display.";
+            showFullTextView(); // Switch to full text view when a set is loaded
         }
+
 
         async function translateText(text) {
-            const apiKey = localStorage.getItem('apiKey');
-            const xaiApiKey = document.getElementById('xaiApiKey').value;
+            // --- MODIFIED: Get API keys and selected model ---
+            const geminiApiKey = localStorage.getItem('apiKey');
+            const mistralApiKey = localStorage.getItem('mistralApiKey'); // Changed from xaiApiKey
             const model = document.getElementById('modelSelect').value;
+            const mistralModels = ['mistral-small-latest', 'open-mistral-7b']; // List of Mistral models
+            // --- END MODIFICATION ---
 
-            if (!apiKey && model === 'gemini-pro') {
-                alert('Please set your Gemini API key in settings first!');
+            if (!text || text.trim().length === 0) {
+                alert('Please enter some text to translate.');
                 return null;
             }
 
-            if (!xaiApiKey && model === 'grok-2-1212') {
-                alert('Please set your xAI API key in settings first!');
+            // --- MODIFIED: API Key Checks ---
+            if (model === 'gemini' && !geminiApiKey) {
+                alert('Please set your Gemini API key in Settings first!');
+                toggleSettings();
                 return null;
             }
-
-            const geminiApiUrl = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent';
-            const xaiApiUrl = 'https://api.x.ai/v1/chat/completions';
-
-            try {
-                let response;
-                if (model === 'gemini-pro') {
-                    response = await fetch(geminiApiUrl, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'x-goog-api-key': apiKey,
-                        },
-                        body: JSON.stringify({
-                            contents: [{
-                                parts: [{
-                                    text: `Translate the following Spanish text to English: ${text}`
-                                }]
-                            }]
-                        })
-                    });
-                } else if (model === 'grok-2-1212') {
-                     response = await fetch(xaiApiUrl, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Authorization': `Bearer ${xaiApiKey}`,
-                        },
-                        body: JSON.stringify({
-                            model: 'grok-2-1212',
-                            messages: [{
-                                role: 'user',
-                                content: `Translate the following Spanish text to English: ${text}`
-                            }]
-                        })
-                    });
-                }
-
-                if (!response.ok) {
-                    const errorData = await response.json();
-                    console.error('API error:', errorData);
-                    throw new Error(`API error: ${response.status} - ${errorData.error?.message || 'Unknown error'}`);
-                }
-
-                const data = await response.json();
-                let englishTranslation;
-
-                if (model === 'gemini-pro') {
-                    englishTranslation = data.candidates[0].content.parts[0].text;
-                } else if (model === 'grok-2-1212') {
-                    englishTranslation = data.choices[0].message.content;
-                }
-
-                const spanishSentences = text.split(/[]\s+|\n/).filter(sentence => sentence.trim() !== '');
-                const englishSentences = englishTranslation.split(/[]\s+|\n/).filter(sentence => sentence.trim() !== '');
-
-                const flashcards = spanishSentences.map((spanishSentence, index) => ({
-                    spanish: spanishSentence.trim(),
-                    english: englishSentences[index] ? englishSentences[index].trim() : 'No translation found'
-                }));
-
-                return flashcards;
-
-            } catch (error) {
-                console.error('Error during translation:', error);
-                alert('Translation failed. Please check your API key and try again.');
+            if (mistralModels.includes(model) && !mistralApiKey) { // Check if selected model is Mistral and key is missing
+                alert('Please set your Mistral API key in Settings first!');
+                toggleSettings();
                 return null;
             }
-        }
-
-        async function createFlashcards() {
-            const text = document.getElementById('textInput').value;
-            if (!text) return;
+            // --- END MODIFICATION ---
 
             const loading = document.getElementById('loadingIndicator');
             loading.classList.add('visible');
 
+            // --- MODIFIED: API URLs ---
+            const geminiApiUrl = `https://generativelanguage.googleapis.com/v1/models/gemini-2.0-flash:generateContent?key=${geminiApiKey}`; //gemini-2.0-flash
+            const mistralApiUrl = 'https://api.mistral.ai/v1/chat/completions'; // Mistral API Endpoint
+
+
+            const prompt = `Translate the following Spanish text to English. Provide the English translation for each corresponding line or sentence of the original Spanish text. Maintain the line breaks from the original text in your translation. Respond ONLY with the English translation, matching line for line.
+
+Spanish Text:
+---
+${text}
+---
+
+English Translation:`;
+
             try {
-                const translated = await translateText(text);
-                if (translated) {
-                    flashcards = translated;
-                    currentIndex = 0;
-                    isFlipped = false;
-                    updateCard();
-                    addToCardList(translated);
-                    document.getElementById('textInput').value = ''; // Clear input
+                let response;
+                let responseData;
+
+                // --- MODIFIED: API Call Logic ---
+                if (model === 'gemini') {
+                    response = await fetch(geminiApiUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            contents: [{ parts: [{ text: prompt }] }]
+                            // Add generationConfig if needed, e.g., temperature: 0.2
+                        })
+                    });
+                    if (!response.ok) throw new Error(`Gemini API Error (${response.status}): ${await response.text()}`);
+                    responseData = await response.json();
+
+                } else if (mistralModels.includes(model)) { // Check if it's a Mistral model
+                     response = await fetch(mistralApiUrl, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${mistralApiKey}`, // Use Mistral key
+                        },
+                        body: JSON.stringify({
+                            model: model, // Use the selected Mistral model name
+                            messages: [{ role: 'user', content: prompt }]
+                            // Add other params like temperature if needed
+                        })
+                    });
+                    if (!response.ok) throw new Error(`Mistral API Error (${response.status}): ${await response.text()}`); // Updated error message
+                    responseData = await response.json();
                 }
+                // --- END MODIFICATION ---
+
+                // --- MODIFIED: Response Handling ---
+                let englishTranslationText;
+                if (model === 'gemini') {
+                    // Check for potential errors in Gemini response structure
+                    if (!responseData.candidates || !responseData.candidates[0]?.content?.parts[0]?.text) {
+                         if (responseData.promptFeedback?.blockReason) {
+                            throw new Error(`Gemini API blocked request: ${responseData.promptFeedback.blockReason} - ${responseData.promptFeedback.blockReasonMessage || ''}`);
+                         } else {
+                            console.error("Invalid Gemini response structure:", responseData);
+                            throw new Error('Received an invalid response structure from Gemini.');
+                         }
+                    }
+                    englishTranslationText = responseData.candidates[0].content.parts[0].text;
+                } else if (mistralModels.includes(model)) { // Check Mistral models
+                     if (!responseData.choices || !responseData.choices[0]?.message?.content) {
+                        console.error("Invalid Mistral response structure:", responseData); // Updated error message
+                        throw new Error('Received an invalid response structure from Mistral.'); // Updated error message
+                    }
+                    englishTranslationText = responseData.choices[0].message.content;
+                }
+                // --- END MODIFICATION ---
+
+
+                // Common logic for splitting sentences and creating cards
+                const spanishSentences = text.trim().split('\n').map(s => s.trim()).filter(Boolean);
+                const englishSentences = englishTranslationText.trim().split('\n').map(s => s.trim()).filter(Boolean);
+
+                 if (spanishSentences.length !== englishSentences.length) {
+                    console.warn(`Mismatched lines: Spanish (${spanishSentences.length}), English (${englishSentences.length}). Pairing may be inaccurate. Model: ${model}`);
+                    // Optional: Alert user about potential mismatch?
+                    // alert(`Warning: Number of Spanish lines (${spanishSentences.length}) does not match translated English lines (${englishSentences.length}). Results might be imperfect.`);
+                 }
+
+                const generatedFlashcards = [];
+                const maxPairs = Math.min(spanishSentences.length, englishSentences.length);
+                 for (let i = 0; i < maxPairs; i++) {
+                     if (spanishSentences[i] && englishSentences[i]) { // Ensure neither is empty
+                         generatedFlashcards.push({
+                            spanish: spanishSentences[i],
+                            english: englishSentences[i]
+                         });
+                     }
+                }
+
+                 if (generatedFlashcards.length === 0 && (spanishSentences.length > 0 || englishSentences.length > 0)) {
+                    alert("Translation successful, but no sentence pairs could be created. Check the input format or model output.");
+                    console.log("Spanish sentences:", spanishSentences);
+                    console.log("English sentences:", englishSentences);
+                    return null;
+                 } else if (generatedFlashcards.length === 0){
+                     alert("No text was found to translate or generate cards from.");
+                     return null;
+                 }
+
+
+                return generatedFlashcards;
+
             } catch (error) {
-                alert('Translation failed. Please check your API key and try again.');
+                console.error('Error during translation API call:', error);
+                alert(`Translation failed: ${error.message}. Please check console, API key, and model selection.`);
+                return null;
             } finally {
                 loading.classList.remove('visible');
             }
         }
 
-        function updateCard() {
-            if (flashcards.length === 0) return;
-            
-            const card = flashcards[currentIndex];
-            const frontText = document.getElementById('frontText');
-            const backText = document.getElementById('backText');
+        async function createFlashcards() {
+            const text = document.getElementById('textInput').value;
+            if (!text.trim()) {
+                 alert("Please enter some text to create flashcards.");
+                 return;
+             }
 
-            if (mergeMode) {
-                frontText.innerHTML = `<div style="margin-bottom: 2rem;">${card.spanish}</div><div>${card.english}</div>`;
-                backText.style.display = 'none';
-            } else {
-                frontText.textContent = card.spanish;
-                backText.textContent = card.english;
-                backText.style.display = isFlipped ? 'block' : 'none';
-            }
-
-            document.getElementById('cardCount').textContent = 
-                `${currentIndex + 1} / ${flashcards.length}`;
-            
-            const flashcardEl = document.querySelector('.flashcard');
-            if (isFlipped && !mergeMode) {
-                flashcardEl.classList.add('flipped');
-            } else {
-                flashcardEl.classList.remove('flipped');
+            try {
+                const translatedCards = await translateText(text);
+                if (translatedCards && translatedCards.length > 0) {
+                     addToCardList(translatedCards, text); // Add the generated cards to the list
+                     document.getElementById('textInput').value = ''; // Clear input on success
+                 } else if (translatedCards === null) {
+                    // Error already handled and alerted in translateText
+                 } else {
+                    alert("Failed to create flashcards. No pairs were generated.");
+                 }
+            } catch (error) {
+                console.error("Error creating flashcards:", error);
+                alert("An unexpected error occurred while creating flashcards.");
+                document.getElementById('loadingIndicator').classList.remove('visible'); // Ensure loading is hidden
             }
         }
 
-        function toggleCard() {
+        function updateCard() {
+            const flashcardEl = document.querySelector('.flashcard');
+            const frontTextEl = document.getElementById('frontText');
+            const backTextEl = document.getElementById('backText');
+            const cardCountEl = document.getElementById('cardCount');
+            const defaultFrontText = "No cards loaded.";
+            const defaultBackText = "Create or select a set.";
+
+            if (!flashcards || flashcards.length === 0) {
+                 frontTextEl.textContent = defaultFrontText;
+                 backTextEl.textContent = defaultBackText;
+                 cardCountEl.textContent = '0 / 0';
+                 flashcardEl.classList.remove('flipped');
+                 flashcardEl.classList.remove('merge-mode'); // Ensure merge mode is off if empty
+                 isFlipped = false;
+                 flashcardEl.classList.add('empty'); // Maybe add a style for .empty?
+                 return;
+            }
+
+            flashcardEl.classList.remove('empty');
+
+            if (currentIndex < 0 || currentIndex >= flashcards.length) {
+                currentIndex = 0; // Reset index if out of bounds
+            }
+
+            const card = flashcards[currentIndex];
+            if (!card) { // Safety check
+                console.error("Invalid card at index", currentIndex);
+                frontTextEl.textContent = "Error loading card.";
+                backTextEl.textContent = "";
+                cardCountEl.textContent = `${currentIndex + 1} / ${flashcards.length}`;
+                return;
+            }
+
+            flashcardEl.classList.toggle('merge-mode', mergeMode);
             if (mergeMode) {
-                nextCard();
+                frontTextEl.innerHTML = `
+                    <div style="margin-bottom: 1rem; opacity: 0.8;">${card.spanish}</div>
+                    <hr style="border: none; border-top: 1px solid var(--glass-border); margin: 1rem 0; transition: border-color 0.3s ease;">
+                    <div>${card.english}</div>`;
+                backTextEl.innerHTML = ''; // Clear back in merge mode
+                flashcardEl.classList.remove('flipped'); // Ensure not flipped in merge mode
+                isFlipped = false;
+            } else {
+                frontTextEl.textContent = card.spanish;
+                backTextEl.textContent = card.english;
+                flashcardEl.classList.toggle('flipped', isFlipped);
+            }
+
+            cardCountEl.textContent = `${currentIndex + 1} / ${flashcards.length}`;
+        }
+
+        function toggleCard() {
+            if (!flashcards || flashcards.length === 0) return; // Do nothing if no cards
+
+            if (mergeMode) {
+                nextCard(); // Go to next card directly in merge mode
             } else {
                 isFlipped = !isFlipped;
-                updateCard();
+                updateCard(); // Flip the card
             }
         }
 
         function nextCard() {
-            if (flashcards.length === 0) return;
+            if (!flashcards || flashcards.length === 0) return;
             currentIndex = (currentIndex + 1) % flashcards.length;
-            isFlipped = false;
+            isFlipped = false; // Show front face on next card
             updateCard();
         }
 
         function prevCard() {
-            if (flashcards.length === 0) return;
+            if (!flashcards || flashcards.length === 0) return;
             currentIndex = (currentIndex - 1 + flashcards.length) % flashcards.length;
-            isFlipped = false;
+            isFlipped = false; // Show front face on prev card
             updateCard();
         }
 
+        // Keyboard navigation
         document.addEventListener('keydown', function(event) {
-            if (event.code === 'Space') {
-                toggleCard();
-            } else if (event.code === 'ArrowLeft') {
-                prevCard();
-            } else if (event.code === 'ArrowRight') {
-                nextCard();
-            } else if (event.code === 'ArrowUp' || event.code === 'ArrowDown') {
-                toggleCard();
-            }
-        });
+             const activeElement = document.activeElement;
+             const isInputFocused = activeElement.tagName === 'INPUT' || activeElement.tagName === 'TEXTAREA' || activeElement.isContentEditable;
+             const isModalVisible = document.getElementById('settingsModal').classList.contains('visible');
 
+             // Ignore keyboard shortcuts if typing in an input/textarea or modal is open
+             if (isInputFocused || isModalVisible) return;
+
+            if (event.code === 'Space' || event.code === 'ArrowUp' || event.code === 'ArrowDown') {
+                 event.preventDefault(); // Prevent page scrolling
+                 toggleCard();
+             } else if (event.code === 'ArrowLeft') {
+                 event.preventDefault();
+                 prevCard();
+             } else if (event.code === 'ArrowRight') {
+                 event.preventDefault();
+                 nextCard();
+             }
+         });
+
+        // --- Music Player Logic ---
         const audioPlayer = document.getElementById('audioPlayer');
-        const playlist = document.getElementById('playlist');
-        const audioFile = document.getElementById('audioFile');
+        const playlistElement = document.getElementById('playlist');
+        const audioFileInput = document.getElementById('audioFile');
         let songs = [];
-        let currentSongIndex = 0;
+        let currentSongIndex = -1;
 
-        audioFile.addEventListener('change', function() {
-            const files = this.files;
-            if (files) {
-                for (let i = 0; i < files.length; i++) {
-                    const file = files[i];
-                    const reader = new FileReader();
-                    reader.onload = function(e) {
-                        const song = {
-                            name: file.name,
-                            src: e.target.result
-                        };
-                        songs.push(song);
-                        addSongToPlaylist(song);
+        audioFileInput.addEventListener('change', function(event) {
+            const files = event.target.files;
+            if (!files || files.length === 0) return;
+
+            let filesLoaded = 0;
+            Array.from(files).forEach(file => {
+                 if (!file.type.startsWith('audio/')) {
+                     console.warn(`Skipping non-audio file: ${file.name}`);
+                     filesLoaded++;
+                     if (filesLoaded === files.length) checkAndPlayFirstSong();
+                     return;
+                 }
+
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const song = {
+                        name: file.name,
+                        src: e.target.result
                     };
-                    reader.readAsDataURL(file);
-                }
-            }
+                     if (!songs.some(s => s.name === song.name)) { // Avoid duplicates
+                         songs.push(song);
+                         addSongToPlaylist(song, songs.length - 1);
+                     } else {
+                         console.log(`Song "${song.name}" already in playlist.`);
+                     }
+                    filesLoaded++;
+                    if (filesLoaded === files.length) checkAndPlayFirstSong(); // Play after all files processed
+                };
+                reader.onerror = () => {
+                     console.error(`Error reading file: ${file.name}`);
+                     filesLoaded++;
+                     if (filesLoaded === files.length) checkAndPlayFirstSong();
+                 };
+                reader.readAsDataURL(file);
+            });
+
+            // Reset file input to allow selecting the same file(s) again
+            event.target.value = null;
         });
 
-        function addSongToPlaylist(song) {
+        function checkAndPlayFirstSong() {
+             // Play the first song only if player is paused AND no song is currently selected/playing
+             if (audioPlayer.paused && currentSongIndex === -1 && songs.length > 0) {
+                 playSongByIndex(0);
+             }
+        }
+
+        function addSongToPlaylist(song, index) {
             const listItem = document.createElement('li');
             listItem.textContent = song.name;
-            listItem.style.cursor = 'pointer';
-            listItem.style.padding = '0.5rem';
-            listItem.style.marginBottom = '0.25rem';
-            listItem.style.background = 'rgba(255, 255, 255, 0.1)';
-            listItem.style.borderRadius = '0.25rem';
+            listItem.title = song.name; // Tooltip for long names
+            listItem.setAttribute('data-index', index.toString());
             listItem.addEventListener('click', function() {
-                playSong(song);
+                playSongByIndex(index);
             });
-            playlist.appendChild(listItem);
+            playlistElement.appendChild(listItem);
+            song.element = listItem; // Store reference to the LI element
         }
 
-        function playSong(song) {
+        function playSongByIndex(index) {
+            if (index < 0 || index >= songs.length) {
+                console.error("Invalid song index:", index);
+                return;
+            }
+            const song = songs[index];
             audioPlayer.src = song.src;
-            audioPlayer.play();
+            audioPlayer.play().catch(e => console.error("Error playing audio:", e));
+            currentSongIndex = index;
+            updatePlaylistHighlight(); // Update UI to show current song
         }
 
-        function toggleDarkMode() {
-            document.body.classList.toggle('dark-mode');
-        }
+         function updatePlaylistHighlight() {
+             // Get current theme's list item background/text colors from CSS variables
+             // This ensures highlighting works correctly after theme changes
+             const computedStyle = getComputedStyle(document.documentElement);
+             const highlightBg = computedStyle.getPropertyValue('--list-item-hover-bg').trim(); // Use hover bg for highlight
+             const defaultBg = computedStyle.getPropertyValue('--list-item-bg').trim();
+             const highlightColor = computedStyle.getPropertyValue('--text-primary').trim();
+             const defaultColor = computedStyle.getPropertyValue('--text-secondary').trim();
+
+             songs.forEach((song, index) => {
+                 if (song.element) { // Check if the element reference exists
+                     if (index === currentSongIndex) {
+                         song.element.style.backgroundColor = highlightBg;
+                         song.element.style.color = highlightColor;
+                         // Ensure the current song is visible in the playlist scroll area
+                         song.element.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                     } else {
+                         song.element.style.backgroundColor = defaultBg;
+                         song.element.style.color = defaultColor;
+                     }
+                 }
+             });
+         }
+
+
+        // Auto-play next song when current one ends
+        audioPlayer.addEventListener('ended', () => {
+            if (songs.length > 0) {
+                const nextIndex = (currentSongIndex + 1) % songs.length; // Loop back to start
+                playSongByIndex(nextIndex);
+            } else {
+                currentSongIndex = -1; // Reset index if playlist is empty
+            }
+        });
+
     </script>
 </body>
 </html>
