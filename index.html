@@ -808,27 +808,25 @@
                     type="password"
                     id="apiKey"
                     placeholder="Enter your Gemini API key"
-                    onchange="saveApiKey(event)"
-                >
+                    onchange="saveApiKey(event)" <!-- Keep onchange for potential immediate feedback -->
             </div>
              <div>
-                <label for="mistralApiKey">Mistral API Key</label> <!-- Changed Label -->
+                <label for="mistralApiKey">Mistral API Key</label>
                 <input
                     type="password"
-                    id="mistralApiKey"                           <!-- Changed ID -->
-                    placeholder="Enter your Mistral API key"     <!-- Changed Placeholder -->
-                    onchange="saveMistralApiKey(event)"          <!-- Changed Function -->
-                />
+                    id="mistralApiKey"
+                    placeholder="Enter your Mistral API key"
+                    onchange="saveMistralApiKey(event)" <!-- Keep onchange for potential immediate feedback -->
             </div>
             <div>
                 <label for="modelSelect">Model</label>
                 <select id="modelSelect">
-                    <option value="gemini">Gemini</option>
-                    <option value="mistral-small-latest">Mistral Small</option>  <!-- Added Mistral Option -->
-                    <option value="open-mistral-7b">Mistral 7B (Open)</option> <!-- Added Mistral Option -->
+                    <option value="gemini">Gemini 2.0 Flash</option>
+                    <option value="mistral-small-latest">Mistral Small</option>
                 </select>
             </div>
-            <button onclick="toggleSettings()"><i class="fa-solid fa-floppy-disk"></i> Save & Close</button>
+            <!-- *** MODIFIED: Call saveSettingsAndClose() instead of toggleSettings() *** -->
+            <button onclick="saveSettingsAndClose()"><i class="fa-solid fa-floppy-disk"></i> Save & Close</button>
         </div>
     </div>
 
@@ -887,14 +885,14 @@
                 applyTheme(document.documentElement.getAttribute('data-theme') || themes[2]);
             }
 
-
+            // Load keys into input fields
             const apiKeyInput = document.getElementById('apiKey');
             apiKeyInput.value = localStorage.getItem('apiKey') || '';
-            // --- MODIFIED: Load Mistral API Key ---
+
             const mistralApiKeyInput = document.getElementById('mistralApiKey');
             mistralApiKeyInput.value = localStorage.getItem('mistralApiKey') || '';
-            // --- END MODIFICATION ---
 
+            // Load saved card sets
             const savedSets = localStorage.getItem('savedCardSets');
             if (savedSets) {
                 try {
@@ -907,6 +905,7 @@
                 updateCardList();
             }
 
+            // Close menu on outside click
             document.addEventListener('click', function(event) {
                 const menu = document.getElementById('menu');
                 const headerTitle = document.querySelector('.header h1');
@@ -915,7 +914,7 @@
                 }
             });
 
-            // Initial playlist highlight check in case theme loaded changes colors
+            // Initial playlist highlight check
             if (currentSongIndex !== -1) {
                 updatePlaylistHighlight();
             }
@@ -1080,19 +1079,38 @@
             }
         }
 
+        // *** NEW FUNCTION: Explicitly save keys from input fields and then close modal ***
+        function saveSettingsAndClose() {
+            const geminiKeyInput = document.getElementById('apiKey');
+            const mistralKeyInput = document.getElementById('mistralApiKey');
+
+            // Save current values directly from input fields
+            localStorage.setItem('apiKey', geminiKeyInput.value);
+            console.log('Saved Gemini Key on Close:', geminiKeyInput.value); // For debugging
+
+            localStorage.setItem('mistralApiKey', mistralKeyInput.value);
+            console.log('Saved Mistral Key on Close:', mistralKeyInput.value); // For debugging
+
+            // Now close the modal
+            toggleSettings();
+        }
+
+        // This function now *only* toggles visibility
         function toggleSettings() {
             document.getElementById('settingsModal').classList.toggle('visible');
         }
 
+        // Keep onchange handlers as a backup/alternative way to save
         function saveApiKey(event) {
-            localStorage.setItem('apiKey', event.target.value); // Gemini Key
+            localStorage.setItem('apiKey', event.target.value);
+            // console.log('Gemini Key saved via onchange'); // Optional debug log
         }
 
-        // --- ADDED: Save Mistral API Key ---
         function saveMistralApiKey(event) {
             localStorage.setItem('mistralApiKey', event.target.value);
+            // console.log('Mistral Key saved via onchange'); // Optional debug log
         }
-        // --- END ADDITION ---
+        // *** END OF MODIFICATIONS FOR SETTINGS SAVE ***
 
 
         function showCreateView() {
@@ -1199,37 +1217,47 @@
 
 
         async function translateText(text) {
-            // --- MODIFIED: Get API keys and selected model ---
+            // --- Get API keys and selected model ---
+            // Read directly from localStorage *at the time of the call*
             const geminiApiKey = localStorage.getItem('apiKey');
-            const mistralApiKey = localStorage.getItem('mistralApiKey'); // Changed from xaiApiKey
+            const mistralApiKey = localStorage.getItem('mistralApiKey');
             const model = document.getElementById('modelSelect').value;
-            const mistralModels = ['mistral-small-latest', 'open-mistral-7b']; // List of Mistral models
-            // --- END MODIFICATION ---
+            const mistralModels = ['mistral-small-latest'];
+
+            console.log('--- translateText Start ---');
+            console.log('Selected Model:', model);
+            console.log('Retrieved Gemini Key:', geminiApiKey ? '******' : 'null/empty');
+            console.log('Retrieved Mistral Key:', mistralApiKey ? '******' : 'null/empty'); // Don't log full key
 
             if (!text || text.trim().length === 0) {
                 alert('Please enter some text to translate.');
                 return null;
             }
 
-            // --- MODIFIED: API Key Checks ---
-            if (model === 'gemini' && !geminiApiKey) {
+            // --- API Key Checks (Using keys directly from localStorage) ---
+            if (model === 'gemini' && (!geminiApiKey || geminiApiKey.trim() === '')) {
+                console.error('Check Failed: Gemini key missing or empty.');
                 alert('Please set your Gemini API key in Settings first!');
-                toggleSettings();
+                // Explicitly show settings *after* alert, ensuring user sees it
+                setTimeout(toggleSettings, 0); // Use timeout to avoid blocking alert
                 return null;
             }
-            if (mistralModels.includes(model) && !mistralApiKey) { // Check if selected model is Mistral and key is missing
+            if (mistralModels.includes(model) && (!mistralApiKey || mistralApiKey.trim() === '')) {
+                console.error('Check Failed: Mistral key missing or empty.');
                 alert('Please set your Mistral API key in Settings first!');
-                toggleSettings();
+                // Explicitly show settings *after* alert
+                setTimeout(toggleSettings, 0); // Use timeout to avoid blocking alert
                 return null;
             }
-            // --- END MODIFICATION ---
+            console.log('API Key checks passed.');
+            // --- END API Key Checks ---
 
             const loading = document.getElementById('loadingIndicator');
             loading.classList.add('visible');
 
-            // --- MODIFIED: API URLs ---
-            const geminiApiUrl = `https://generativelanguage.googleapis.com/v1/models/gemini-2.0-flash:generateContent?key=${geminiApiKey}`; //gemini-2.0-flash
-            const mistralApiUrl = 'https://api.mistral.ai/v1/chat/completions'; // Mistral API Endpoint
+            // --- API URLs ---
+            const geminiApiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${geminiApiKey}`;
+            const mistralApiUrl = 'https://api.mistral.ai/v1/chat/completions';
 
 
             const prompt = `Translate the following Spanish text to English. Provide the English translation for each corresponding line or sentence of the original Spanish text. Maintain the line breaks from the original text in your translation. Respond ONLY with the English translation, matching line for line.
@@ -1245,58 +1273,60 @@ English Translation:`;
                 let response;
                 let responseData;
 
-                // --- MODIFIED: API Call Logic ---
+                // --- API Call Logic ---
                 if (model === 'gemini') {
+                    console.log("Calling Gemini API...");
                     response = await fetch(geminiApiUrl, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({
                             contents: [{ parts: [{ text: prompt }] }]
-                            // Add generationConfig if needed, e.g., temperature: 0.2
                         })
                     });
                     if (!response.ok) throw new Error(`Gemini API Error (${response.status}): ${await response.text()}`);
                     responseData = await response.json();
+                    console.log("Gemini API response received.");
 
-                } else if (mistralModels.includes(model)) { // Check if it's a Mistral model
+                } else if (mistralModels.includes(model)) {
+                     console.log("Calling Mistral API...");
                      response = await fetch(mistralApiUrl, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
-                            'Authorization': `Bearer ${mistralApiKey}`, // Use Mistral key
+                            'Authorization': `Bearer ${mistralApiKey}`,
                         },
                         body: JSON.stringify({
-                            model: model, // Use the selected Mistral model name
+                            model: model,
                             messages: [{ role: 'user', content: prompt }]
-                            // Add other params like temperature if needed
                         })
                     });
-                    if (!response.ok) throw new Error(`Mistral API Error (${response.status}): ${await response.text()}`); // Updated error message
+                    if (!response.ok) throw new Error(`Mistral API Error (${response.status}): ${await response.text()}`);
                     responseData = await response.json();
+                     console.log("Mistral API response received.");
+                } else {
+                    throw new Error(`Unsupported model selected: ${model}`);
                 }
-                // --- END MODIFICATION ---
+                // --- END API Call Logic ---
 
-                // --- MODIFIED: Response Handling ---
+                // --- Response Handling ---
                 let englishTranslationText;
                 if (model === 'gemini') {
-                    // Check for potential errors in Gemini response structure
+                     if (responseData.promptFeedback?.blockReason) {
+                        throw new Error(`Gemini API blocked request: ${responseData.promptFeedback.blockReason}${responseData.promptFeedback.blockReasonMessage ? ' - ' + responseData.promptFeedback.blockReasonMessage : ''}`);
+                     }
                     if (!responseData.candidates || !responseData.candidates[0]?.content?.parts[0]?.text) {
-                         if (responseData.promptFeedback?.blockReason) {
-                            throw new Error(`Gemini API blocked request: ${responseData.promptFeedback.blockReason} - ${responseData.promptFeedback.blockReasonMessage || ''}`);
-                         } else {
-                            console.error("Invalid Gemini response structure:", responseData);
-                            throw new Error('Received an invalid response structure from Gemini.');
-                         }
+                        console.error("Invalid Gemini response structure:", responseData);
+                        throw new Error('Received an invalid response structure from Gemini.');
                     }
                     englishTranslationText = responseData.candidates[0].content.parts[0].text;
-                } else if (mistralModels.includes(model)) { // Check Mistral models
+                } else if (mistralModels.includes(model)) {
                      if (!responseData.choices || !responseData.choices[0]?.message?.content) {
-                        console.error("Invalid Mistral response structure:", responseData); // Updated error message
-                        throw new Error('Received an invalid response structure from Mistral.'); // Updated error message
+                        console.error("Invalid Mistral response structure:", responseData);
+                        throw new Error('Received an invalid response structure from Mistral.');
                     }
                     englishTranslationText = responseData.choices[0].message.content;
                 }
-                // --- END MODIFICATION ---
+                // --- END Response Handling ---
 
 
                 // Common logic for splitting sentences and creating cards
@@ -1305,14 +1335,12 @@ English Translation:`;
 
                  if (spanishSentences.length !== englishSentences.length) {
                     console.warn(`Mismatched lines: Spanish (${spanishSentences.length}), English (${englishSentences.length}). Pairing may be inaccurate. Model: ${model}`);
-                    // Optional: Alert user about potential mismatch?
-                    // alert(`Warning: Number of Spanish lines (${spanishSentences.length}) does not match translated English lines (${englishSentences.length}). Results might be imperfect.`);
                  }
 
                 const generatedFlashcards = [];
                 const maxPairs = Math.min(spanishSentences.length, englishSentences.length);
                  for (let i = 0; i < maxPairs; i++) {
-                     if (spanishSentences[i] && englishSentences[i]) { // Ensure neither is empty
+                     if (spanishSentences[i] && englishSentences[i]) {
                          generatedFlashcards.push({
                             spanish: spanishSentences[i],
                             english: englishSentences[i]
@@ -1330,7 +1358,7 @@ English Translation:`;
                      return null;
                  }
 
-
+                console.log(`Generated ${generatedFlashcards.length} flashcards.`);
                 return generatedFlashcards;
 
             } catch (error) {
@@ -1339,6 +1367,7 @@ English Translation:`;
                 return null;
             } finally {
                 loading.classList.remove('visible');
+                console.log('--- translateText End ---');
             }
         }
 
@@ -1350,12 +1379,13 @@ English Translation:`;
              }
 
             try {
-                const translatedCards = await translateText(text);
+                const translatedCards = await translateText(text); // Calls the updated translateText
                 if (translatedCards && translatedCards.length > 0) {
                      addToCardList(translatedCards, text); // Add the generated cards to the list
                      document.getElementById('textInput').value = ''; // Clear input on success
                  } else if (translatedCards === null) {
                     // Error already handled and alerted in translateText
+                    console.log("createFlashcards: translateText returned null (error likely alerted).");
                  } else {
                     alert("Failed to create flashcards. No pairs were generated.");
                  }
